@@ -9,7 +9,6 @@ jobs:
   security-scan:
     runs-on: ubuntu-latest
     env:
-      SKILLSPECTOR_DIR: ${{ runner.temp }}/skillspector
       SKILLSPECTOR_COMMIT: a5092dd9b9521ff57a9b53612bb129ce78019002
 
     steps:
@@ -19,25 +18,23 @@ jobs:
         with:
           python-version: "3.12"
 
-      - uses: astral-sh/setup-uv@v5
-        with:
-          enable-cache: true
+      - name: Install uv
+        run: pip install uv && echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
-      - uses: actions/cache@v4
+      - name: Cache SkillSpector
+        uses: actions/cache@v4
         id: cache-sp
         with:
-          path: ${{ env.SKILLSPECTOR_DIR }}
+          path: /tmp/skillspector
           key: skillspector-${{ env.SKILLSPECTOR_COMMIT }}
 
       - name: Clone SkillSpector
         if: steps.cache-sp.outputs.cache-hit != 'true'
         id: clone
         continue-on-error: true
-        uses: actions/checkout@v4
-        with:
-          repository: nvidia/skillspector
-          ref: ${{ env.SKILLSPECTOR_COMMIT }}
-          path: ${{ env.SKILLSPECTOR_DIR }}
+        run: |
+          git clone --depth 1 https://github.com/nvidia/skillspector.git /tmp/skillspector
+          cd /tmp/skillspector && git fetch --depth 1 origin $SKILLSPECTOR_COMMIT && git checkout $SKILLSPECTOR_COMMIT
 
       - name: Handle clone failure
         if: steps.clone.outcome == 'failure'
@@ -46,7 +43,7 @@ jobs:
 
       - name: Install SkillSpector deps
         if: steps.cache-sp.outputs.cache-hit == 'true' || steps.clone.outcome == 'success'
-        working-directory: ${{ env.SKILLSPECTOR_DIR }}
+        working-directory: /tmp/skillspector
         run: uv sync
 
       - name: Scan all skills
@@ -65,7 +62,7 @@ jobs:
 
           has_findings=false
           for skill in $skills; do
-            uv run --project "$SKILLSPECTOR_DIR" skillspector scan \
+            uv run --project /tmp/skillspector skillspector scan \
               "skills/$skill" --no-llm --format sarif -o "report-$skill.sarif" || true
             if [ -f "report-$skill.sarif" ]; then
               jq -s '{version:"2.1.0","$schema":.[0]."$schema","runs":[.[].runs[]?]}' \
