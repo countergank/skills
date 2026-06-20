@@ -1,5 +1,7 @@
 # Countergank Skills
 
+[![Security Scan](https://github.com/countergank/skills/actions/workflows/security-scan.yml/badge.svg)](https://github.com/countergank/skills/actions/workflows/security-scan.yml)
+
 A collection of agent skills installable via the `npx skills` ecosystem.
 
 ## Install
