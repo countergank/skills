@@ -11,13 +11,28 @@ If you discover a security vulnerability in any skill within this repository, pl
 
 ## Scanning Policy
 
-Every skill **must** pass a SkillSpector scan before merge. This is a developer-side gate.
+Every skill **must** pass a SkillSpector scan before merge. Enforcement is automated via GitHub Actions — the SkillSpector Security Scan workflow runs on every PR and push to protected branches.
 
 - **Install path**: Users install skills via `npx skills add countergank/skills`. Scanning is a pre-merge requirement, not a user-facing step.
 - **Scan command**: `./scripts/scan.sh skills/<name> --format json`
 - **Batch scan**: `./scripts/scan-all.sh --format json` scans all skills in the repository.
-- **CI enforcement**: In automated environments, the scan must pass before a skill can be merged.
+- **CI enforcement**: The `SkillSpector Security Scan` workflow runs automatically on every pull request and push to `main`/`develop`. Results appear in the GitHub Security → Code Scanning tab.
 - **No bypass**: Skipping the scan is not permitted for production or organizational use.
+
+## Branch Protection
+
+The `main` and `develop` branches require the **SkillSpector Security Scan** status check to pass before merge.
+
+### Configuration (repository admin)
+
+1. Go to **Settings → Branches → Add branch protection rule**
+2. Set branch name pattern to `main` (repeat for `develop`)
+3. Check **"Require status checks to pass before merging"**
+4. Search and select **`SkillSpector Security Scan`**
+5. Check **"Require branches to be up to date before merging"**
+6. Do **NOT** check "Include administrators" during rollout
+
+> **Note**: The check must have run at least once on the branch before it appears in the status check search. Open a PR or push to the branch first if the check is not yet listed.
 
 ## SkillSpector Detection Coverage
 
