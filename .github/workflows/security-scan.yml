@@ -1,0 +1,88 @@
+name: SkillSpector Security Scan
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    env:
+      SKILLSPECTOR_COMMIT: a5092dd9b9521ff57a9b53612bb129ce78019002
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: pip install uv && echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Cache SkillSpector
+        uses: actions/cache@v4
+        id: cache-sp
+        with:
+          path: /tmp/skillspector
+          key: skillspector-${{ env.SKILLSPECTOR_COMMIT }}
+
+      - name: Clone SkillSpector
+        if: steps.cache-sp.outputs.cache-hit != 'true'
+        id: clone
+        continue-on-error: true
+        run: |
+          git clone --depth 1 https://github.com/nvidia/skillspector.git /tmp/skillspector
+          cd /tmp/skillspector && git fetch --depth 1 origin $SKILLSPECTOR_COMMIT && git checkout $SKILLSPECTOR_COMMIT
+
+      - name: Handle clone failure
+        if: steps.clone.outcome == 'failure'
+        run: |
+          echo "::warning::SkillSpector clone failed — skipping scan"
+
+      - name: Install SkillSpector deps
+        if: steps.cache-sp.outputs.cache-hit == 'true' || steps.clone.outcome == 'success'
+        working-directory: /tmp/skillspector
+        run: uv sync
+
+      - name: Scan all skills
+        if: steps.cache-sp.outputs.cache-hit == 'true' || steps.clone.outcome == 'success'
+        id: scan
+        run: |
+          skills=$(find skills -mindepth 1 -maxdepth 1 -type d -print0 \
+            | sort -z | xargs -0 -n1 basename)
+          if [ -z "$skills" ]; then
+            echo "No skill directories found — nothing to scan."
+            echo "has_findings=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo '{"version":"2.1.0","$schema":"https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json","runs":[]}' > merged.sarif
+
+          has_findings=false
+          for skill in $skills; do
+            uv run --project /tmp/skillspector skillspector scan \
+              "skills/$skill" --no-llm --format sarif -o "report-$skill.sarif" || true
+            if [ -f "report-$skill.sarif" ]; then
+              jq -s '{version:"2.1.0","$schema":.[0]."$schema","runs":[.[].runs[]?]}' \
+                merged.sarif "report-$skill.sarif" > tmp.sarif && mv tmp.sarif merged.sarif
+            fi
+          done
+
+          if grep -q '"level":"error"' merged.sarif || grep -q '"level":"warning"' merged.sarif; then
+            has_findings=true
+          fi
+          echo "has_findings=$has_findings" >> "$GITHUB_OUTPUT"
+
+      - name: Upload SARIF
+        if: always() && steps.scan.outcome != 'skipped'
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: merged.sarif
+          category: skillspector
+          wait-for-processing: true
+
+      - name: Fail on findings
+        if: steps.scan.outputs.has_findings == 'true'
+        run: exit 1
