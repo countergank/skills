@@ -19,25 +19,25 @@ Activate when authoring, reviewing, or modifying Kubernetes manifests, Helm char
 | P0 | resource-management | 4 | requests, limits, CPU limits, memory limits |
 | P0 | reliability | 4 | readiness probe, liveness probe, replicas >= 2, PDB |
 | P0 | observability | 3 | ServiceMonitor labels, pod scrape annotations, container logging |
-| P0 | naming-labels | 3 | app.kubernetes.io/name, app.kubernetes.io/instance, namespace naming |
-| P0 | mongodb | 3 | Persistent storage, StatefulSet required, auth enabled |
-| P0 | anti-patterns | 3 | No latest tag, no privileged, no root user |
-| P1 | security | 4 | seccomp profile, network policies, automount service token, pod security admission |
-| P1 | resource-management | 2 | CPU/memory ratio, HPA configured |
-| P1 | reliability | 3 | startup probe, termination grace period, topology spread |
-| P1 | observability | 4 | structured logging, dashboard labels, alert rules, tracing context |
+| P0 | naming-labels | 4 | app.kubernetes.io/name, app.kubernetes.io/instance, namespace naming, selector consistency |
+| P0 | mongodb | 3 | Persistent storage (PVC Retain), StatefulSet required, auth enabled |
+| P0 | anti-patterns | 6 | No latest tag, no privileged, no root user, no NodePort, no hostPath, no emptyDir for data |
+| P1 | security | 5 | seccomp profile, network policies, automount service token, RBAC least privilege, SealedSecrets |
+| P1 | resource-management | 4 | CPU/memory ratio, HPA configured, image pull policy, resource quotas |
+| P1 | reliability | 5 | startup probe, termination grace period, topology spread, priority class, pod anti-affinity |
+| P1 | observability | 5 | structured logging, dashboard labels, alert rules, tracing context, metrics endpoint |
 | P1 | naming-labels | 3 | component label, part-of label, managed-by label |
-| P1 | mongodb | 3 | backup schedule, anti-affinity, TLS required |
+| P1 | mongodb | 4 | backup schedule, anti-affinity, TLS required, WiredTiger cache |
 | P1 | anti-patterns | 2 | no default namespace, missing probes |
 | P2 | security | 1 | pod security admission (advisory) |
 | P2 | resource-management | 1 | limit ranges |
-| P2 | reliability | 1 | revision history limit |
+| P2 | reliability | 2 | revision history limit, image version comments |
 | P2 | observability | 1 | cost allocation |
 | P2 | naming-labels | 1 | version label |
-| P2 | mongodb | 2 | arbiter pattern, connection pooling |
+| P2 | mongodb | 3 | arbiter pattern, connection pooling, MongoDB exporter |
 | P3 | anti-patterns | 1 | no image digest (advisory) |
 
-**Totals**: 53 rules — 22 P0 + 19 P1 + 11 P2 + 1 P3 across 7 categories
+**Totals**: 67 rules — 29 P0 + 28 P1 + 9 P2 + 1 P3 across 7 categories
 
 ## Quick Reference
 
