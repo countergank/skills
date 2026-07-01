@@ -22,7 +22,7 @@ Activate when authoring, reviewing, or modifying Kubernetes manifests, Helm char
 | P0 | naming-labels | 3 | app.kubernetes.io/name, app.kubernetes.io/instance, namespace naming |
 | P0 | mongodb | 3 | Persistent storage, StatefulSet required, auth enabled |
 | P0 | anti-patterns | 3 | No latest tag, no privileged, no root user |
-| P1 | security | 4 | seccomp profile, network policies, automount service token, pod security admission |
+| P1 | security | 3 | seccomp profile, network policies, automount service token |
 | P1 | resource-management | 2 | CPU/memory ratio, HPA configured |
 | P1 | reliability | 3 | startup probe, termination grace period, topology spread |
 | P1 | observability | 4 | structured logging, dashboard labels, alert rules, tracing context |
@@ -37,7 +37,7 @@ Activate when authoring, reviewing, or modifying Kubernetes manifests, Helm char
 | P2 | mongodb | 2 | arbiter pattern, connection pooling |
 | P3 | anti-patterns | 1 | no image digest (advisory) |
 
-**Totals**: 53 rules — 22 P0 + 19 P1 + 11 P2 + 1 P3 across 7 categories
+**Totals**: 53 rules — 25 P0 + 20 P1 + 7 P2 + 1 P3 across 7 categories
 
 ## Quick Reference
 
