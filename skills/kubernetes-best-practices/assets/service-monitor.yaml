@@ -1,0 +1,54 @@
+# ServiceMonitor Template — Prometheus Metrics Scraping
+# Defines how Prometheus discovers and scrapes metrics endpoints.
+# Requires prometheus-operator installed.
+# Reference: rules/observability/p0-service-monitor-labels.md
+#            rules/observability/p0-pod-annotations-scrape.md
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: api-service-monitor
+  namespace: production
+  labels:
+    app.kubernetes.io/name: api-service
+    app.kubernetes.io/component: monitoring
+    app.kubernetes.io/part-of: observability
+    # Prometheus selector label — must match prometheus scrape config
+    release: prometheus
+spec:
+  # Selects the Service to scrape
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: api-service
+      app.kubernetes.io/component: service
+  namespaceSelector:
+    matchNames:
+      - production
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 30s
+      scrapeTimeout: 10s
+      scheme: http
+      # Optional: TLS config for HTTPS metrics endpoints
+      # tlsConfig:
+      #   insecureSkipVerify: false
+      #   ca:
+      #     secret:
+      #       name: metrics-tls
+      #       key: ca.crt
+      # Optional: Basic auth for protected metrics endpoints
+      # basicAuth:
+      #   username:
+      #     name: metrics-credentials
+      #     key: username
+      #   password:
+      #     name: metrics-credentials
+      #     key: password
+      # Optional: Metric relabeling
+      # metricRelabelings:
+      #   - sourceLabels: [__name__]
+      #     regex: "go_.*"
+      #     action: drop
+  # Job label override (optional)
+  jobLabel: app.kubernetes.io/name

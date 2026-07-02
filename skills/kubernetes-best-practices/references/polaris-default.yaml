@@ -1,0 +1,45 @@
+# Polaris Default Checks Configuration
+# Source: Fairwinds Polaris 9.x
+# https://github.com/FairwindsOps/polaris/blob/master/pkg/config/configuration.go
+#
+# This file documents the default checks Polaris applies to Kubernetes manifests.
+# Use as a reference for rule coverage and severity mapping.
+
+checks:
+  # --- Resource Management ---
+  cpuRequestsMissing: warning
+  cpuLimitsMissing: warning
+  memoryRequestsMissing: warning
+  memoryLimitsMissing: warning
+
+  # --- Security ---
+  runAsRootAllowed: warning
+  runAsPrivilegedAllowed: warning
+  notReadOnlyRootFilesystem: warning
+  privilegeEscalationAllowed: warning
+  insecureCapabilities: warning
+  hostNetworkSet: warning
+  hostPortSet: warning
+  hostPIDSet: warning
+  hostIPCSet: warning
+  notDropAllCapabilities: warning
+  automountServiceAccountToken: warning
+  tlsSettingsMissing: warning
+  clusterrolePodExecCreate: warning
+  rolePodExecCreate: warning
+
+  # --- Reliability ---
+  deploymentMissingReplicas: warning
+  priorityClassNotSet: warning
+  tagNotSpecified: warning
+  pullPolicyNotAlways: warning
+  readinessProbeMissing: warning
+  livenessProbeMissing: warning
+  pdbDisruptionsIsZero: warning
+  missingPodDisruptionBudget: warning
+  topologySpreadConstraints: warning
+
+  # --- Efficiency ---
+  metadataAndNameMismatched: warning
+  pdbMinAvailableMissing: warning
+  pdbMaxUnavailableMissing: warning

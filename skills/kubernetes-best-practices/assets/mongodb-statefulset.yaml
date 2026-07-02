@@ -1,0 +1,141 @@
+# MongoDB StatefulSet Template — Production Configuration
+# Uses MongoDB Community Operator pattern.
+# Includes: PDB, TLS, backup sidecar, PVC Retain, anti-affinity.
+# Reference: rules/mongodb/p0-persistent-storage.md
+#            rules/mongodb/p0-statefulset-required.md
+#            rules/mongodb/p0-auth-enabled.md
+#            rules/mongodb/p1-backup-schedule.md
+#            rules/mongodb/p1-anti-affinity.md
+#            rules/mongodb/p1-tls-required.md
+
+---
+# Pod Disruption Budget (P0 reliability)
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mongodb-pdb
+  namespace: production
+  labels:
+    app.kubernetes.io/name: mongodb
+    app.kubernetes.io/component: database
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mongodb
+
+---
+# MongoDB Community Operator resource
+apiVersion: mongodbcommunity.mongodb.com/v1
+kind: MongoDBCommunity
+metadata:
+  name: mongodb
+  namespace: production
+  labels:
+    app.kubernetes.io/name: mongodb
+    app.kubernetes.io/instance: mongodb-prod
+    app.kubernetes.io/version: "7.0.5"
+    app.kubernetes.io/component: database
+    app.kubernetes.io/managed-by: mongodb-community-operator
+spec:
+  # P0: StatefulSet required (operator creates it internally)
+  members: 3
+  type: ReplicaSet
+  version: "7.0.5"
+
+  # P0: Authentication enabled
+  security:
+    authentication:
+      modes: ["SCRAM"]
+    # P1: TLS required
+    tls:
+      enabled: true
+      certificateKeySecretRef:
+        name: mongodb-tls
+      caConfigMapRef:
+        name: mongodb-ca
+
+  # P0: Persistent storage with Retain
+  persistent: true
+  storage:
+    storageClass: "gp3-retain"
+    volumeClaimTemplate:
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 50Gi
+        storageClassName: gp3-retain
+        # Retain policy — set on the StorageClass, documented here
+        # reclaimPolicy: Retain
+
+  # P1: Anti-affinity (spread across nodes/zones)
+  statefulSet:
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: mongodb
+                topologyKey: topology.kubernetes.io/zone
+            - weight: 50
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: mongodb
+                topologyKey: kubernetes.io/hostname
+      template:
+        spec:
+          # P0: Security defaults
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 2000
+            fsGroup: 2000
+          containers:
+            - name: mongod
+              resources:
+                requests:
+                  cpu: 500m
+                  memory: 1Gi
+                limits:
+                  cpu: "2"
+                  memory: 2Gi
+              # P0: Probes
+              readinessProbe:
+                exec:
+                  command:
+                    - mongosh
+                    - --eval
+                    - "db.adminCommand('ping')"
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                failureThreshold: 3
+              livenessProbe:
+                exec:
+                  command:
+                    - mongosh
+                    - --eval
+                    - "db.adminCommand('ping')"
+                initialDelaySeconds: 30
+                periodSeconds: 20
+                failureThreshold: 5
+          # P1: Backup sidecar (example using mongodump)
+          # In production, use a dedicated backup operator (e.g., Percona Backup Manager)
+          # - name: backup-sidecar
+          #   image: myregistry/mongodb-backup:1.0.0
+          #   env:
+          #     - name: BACKUP_SCHEDULE
+          #       value: "0 2 * * *"  # Daily at 2 AM
+          #     - name: BACKUP_RETENTION_DAYS
+          #       value: "30"
+          #     - name: S3_BUCKET
+          #       value: "mongodb-backups-prod"
+          #   volumeMounts:
+          #     - name: backup-storage
+          #       mountPath: /backups
+          # volumes:
+          #   - name: backup-storage
+          #     emptyDir: {}
