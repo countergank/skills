@@ -24,15 +24,25 @@ category: environment
 | Require pull request | Yes | Yes | Yes |
 | Required reviewers | 1 | 1 | 1 |
 | Dismiss stale reviews | Yes | Yes | Yes |
+| Require last push approval | Yes | Yes | Yes |
 | Require status checks | Yes | Yes | Yes |
 | Require branches up to date (strict) | No | Yes | Yes |
 | Restrict who can push | No | Yes (release/* only) | Yes (release/* and hotfix/* only) |
 | Allow force pushes | No | No | No |
 | Allow deletions | No | No | No |
 | Include administrators | Yes | Yes | Yes |
-| Admin bypass (pull request) | Yes | No | No |
+| Admin bypass (pull request) | Yes | Yes | Yes |
 
-> **GitHub note**: These settings map to "Branch protection rules" in repository settings. "Include administrators" enforces all rules for admins too. "Admin bypass (pull request)" uses `bypass_pull_request_allowances` to let admins skip PR requirements on `develop` only — remove this when the team grows.
+> **GitHub note**: These settings map to "Branch protection rules" in repository settings. "Include administrators" enforces all rules for admins too. "Admin bypass (pull request)" uses `bypass_pull_request_allowances` to let designated users skip PR requirements — remove specific users when the team grows.
+
+### Solo Work Bypass Pattern
+
+When working solo, the admin needs `bypass_pull_request_allowances` on ALL branches to self-merge PRs. This is a temporary pattern — remove specific users from the bypass list when the team grows.
+
+**Required fields in `bypass_pull_request_allowances`:**
+- `users`: Array of GitHub usernames allowed to bypass (e.g., `["leandrojaviercepeda"]`)
+- `teams`: Empty array `[]`
+- `apps`: Empty array `[]`
 
 ### GitHub API Reference
 
@@ -40,10 +50,16 @@ category: environment
 {
   "required_status_checks": { "strict": false, "contexts": ["<repo-specific>"] },
   "enforce_admins": true,
-    "required_pull_request_reviews": {
-      "required_approving_review_count": 1,
-      "dismiss_stale_reviews": true
-    },
+  "required_pull_request_reviews": {
+    "required_approving_review_count": 1,
+    "dismiss_stale_reviews": true,
+    "require_last_push_approval": true,
+    "bypass_pull_request_allowances": {
+      "users": ["<github-username>"],
+      "teams": [],
+      "apps": []
+    }
+  },
   "restrictions": null,
   "allow_force_pushes": false,
   "allow_deletions": false
@@ -59,6 +75,7 @@ category: environment
 - **Required reviewers**: 1 (one approval required)
 - **Status checks**: Required (CI must pass — lint, test, build per repo config)
 - **Dismiss stale reviews**: Yes (re-approve after new commits)
+- **Require last push approval**: Yes (last push must be approved by someone other than the pusher; bypass skips this)
 - **Force push**: Blocked (history preservation)
 - **Admin bypass**: Pull request bypass allowed (for solo work; remove when team grows)
 - **Direct push**: Blocked (PR-only workflow)
@@ -74,11 +91,12 @@ category: environment
 - **Required reviewers**: 1 (at least one approval)
 - **Status checks**: Required (CI must pass)
 - **Dismiss stale reviews**: Yes
+- **Require last push approval**: Yes
 - **Force push**: Blocked
-- **Admin bypass**: No (no pull request bypass — admins must follow the flow)
+- **Admin bypass**: Pull request bypass allowed (for solo work; remove when team grows)
 - **Direct push**: Blocked (only release branches merge here)
 
-**Why**: Staging is the last gate before production. A single review catches obvious issues; status checks ensure CI validation before curation testing begins. No admin bypass — even admins must go through the release flow.
+**Why**: Staging is the last gate before production. A single review catches obvious issues; status checks ensure CI validation before curation testing begins. Admin bypass allows self-merge when working solo — remove it when the team grows.
 
 **Allowed merge paths**: `release/*` branches only → `staging`
 
@@ -89,11 +107,12 @@ category: environment
 - **Required reviewers**: 1 (one approval required; increase to 2 when team grows)
 - **Status checks**: Required (CI + staging validation)
 - **Dismiss stale reviews**: Yes
+- **Require last push approval**: Yes
 - **Force push**: Blocked
-- **Admin bypass**: No (no pull request bypass — admins must follow the flow)
+- **Admin bypass**: Pull request bypass allowed (for solo work; remove when team grows)
 - **Direct push**: Blocked (only release/hotfix branches merge here)
 
-**Why**: `main` is production. Two distinct reviewers catch different perspectives; status checks ensure the code was validated in staging first. No admin bypass — this is the safety net for all production deployments.
+**Why**: `main` is production. Two distinct reviewers catch different perspectives; status checks ensure the code was validated in staging first. Admin bypass allows self-merge when working solo — remove it when the team grows.
 
 **Allowed merge paths**: `release/*` branches → `main`, `hotfix/*` branches → `main`
 
@@ -114,12 +133,12 @@ Branch protection enforces the promotion chain by controlling which branches can
 | Merge Path | Protection Effect |
 |------------|-------------------|
 | Feature → `develop` | PR required, squash merge. 1 reviewer + CI checks. Admin can bypass PR when working solo. |
-| `release/*` → `staging` | PR required from `release/*` only. 1 reviewer + CI checks. No admin bypass. |
-| `release/*` → `main` | PR required from `release/*` only. 1 reviewer + CI/staging checks. No admin bypass. Increase to 2 reviewers when team grows. |
+| `release/*` → `staging` | PR required from `release/*` only. 1 reviewer + CI checks. Admin can bypass PR when working solo. |
+| `release/*` → `main` | PR required from `release/*` only. 1 reviewer + CI/staging checks. Admin can bypass PR when working solo. Increase to 2 reviewers when team grows. |
 | `hotfix/*` → `main` | PR required from `hotfix/*` only. Bypasses staging entirely — emergency path. |
 | `main` → `develop` | Backmerge allowed. Protected branch pushing to less-protected branch — no conflict. |
 
-> **Key insight**: Protection flows left to right. `develop` has basic gates (1 reviewer + CI) with admin bypass for solo work. `staging` adds gates and removes admin bypass. `main` has the highest protection with 2 reviewers and no bypass. This mirrors the promotion chain: risk increases as code moves toward production.
+> **Key insight**: Protection is consistent across all branches — 1 reviewer, CI required, dismiss stale reviews, require last push approval. The difference is in strictness (develop allows out-of-date branches, staging/main require up-to-date) and allowed source branches (staging only from release/*, main from release/* and hotfix/*). Admin bypass applies to all branches for solo work — remove when the team grows.
 
 ## Rules
 
@@ -134,18 +153,20 @@ Branch protection enforces the promotion chain by controlling which branches can
 ✅ Good: New repo created with develop, staging, main; develop set as default
 ✅ Good: PR targets develop for a feature branch — squash merge, 1 reviewer, CI must pass
 ✅ Good: Solo dev merges to develop using admin bypass — temporary, remove when team grows
-✅ Good: release/1.2.0 PR targets staging — 1 reviewer required, CI must pass, no admin bypass
+✅ Good: Solo dev merges release to staging using admin bypass — temporary, remove when team grows
+✅ Good: Solo dev merges release to main using admin bypass — temporary, remove when team grows
+✅ Good: release/1.2.0 PR targets staging — 1 reviewer required, CI must pass, strict checks
 ✅ Good: release/1.2.0 PR targets main — 1 reviewer required, CI + staging validation (increase to 2 when team grows)
 ✅ Good: hotfix/critical-fix PR targets main — bypasses staging, 1 reviewer (or admin merge)
 ✅ Good: main backmerged to develop — protected pushing to less-protected, allowed
 ✅ Good: All branches have "Include administrators" enabled
 ✅ Good: Stale review dismissed after new commits — re-approval required
+✅ Good: Last push approved by someone other than the pusher (or bypass for solo dev)
 ❌ Bad:  Repo has only main branch
 ❌ Bad:  main is the default branch
 ❌ Bad:  Feature branch PR targets staging directly
 ❌ Bad:  Direct push to main bypasses PR
 ❌ Bad:  staging has 0 reviewers — curation is unvalidated
 ❌ Bad:  force push to main destroys production history
-❌ Bad:  Admin bypasses protection on staging or main — bypass only allowed on develop
 ❌ Bad:  Merged PR with stale approval after new commits — dismiss_stale_reviews must be ON
 ```
