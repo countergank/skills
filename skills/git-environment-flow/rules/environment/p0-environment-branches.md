@@ -24,7 +24,6 @@ category: environment
 | Require pull request | Yes | Yes | Yes |
 | Required reviewers | 1 | 1 | 1 |
 | Dismiss stale reviews | Yes | Yes | Yes |
-| Require last push approval | Yes | Yes | Yes |
 | Require status checks | Yes | Yes | Yes |
 | Require branches up to date (strict) | No | Yes | Yes |
 | Restrict who can push | No | Yes (release/* only) | Yes (release/* and hotfix/* only) |
@@ -41,11 +40,10 @@ category: environment
 {
   "required_status_checks": { "strict": false, "contexts": ["<repo-specific>"] },
   "enforce_admins": true,
-  "required_pull_request_reviews": {
-    "required_approving_review_count": 1,
-    "dismiss_stale_reviews": true,
-    "require_last_push_approval": true
-  },
+    "required_pull_request_reviews": {
+      "required_approving_review_count": 1,
+      "dismiss_stale_reviews": true
+    },
   "restrictions": null,
   "allow_force_pushes": false,
   "allow_deletions": false
@@ -61,7 +59,6 @@ category: environment
 - **Required reviewers**: 1 (one approval required)
 - **Status checks**: Required (CI must pass — lint, test, build per repo config)
 - **Dismiss stale reviews**: Yes (re-approve after new commits)
-- **Require last push approval**: Yes (last push must be approved by someone else)
 - **Force push**: Blocked (history preservation)
 - **Admin bypass**: Pull request bypass allowed (for solo work; remove when team grows)
 - **Direct push**: Blocked (PR-only workflow)
@@ -77,7 +74,6 @@ category: environment
 - **Required reviewers**: 1 (at least one approval)
 - **Status checks**: Required (CI must pass)
 - **Dismiss stale reviews**: Yes
-- **Require last push approval**: Yes
 - **Force push**: Blocked
 - **Admin bypass**: No (no pull request bypass — admins must follow the flow)
 - **Direct push**: Blocked (only release branches merge here)
@@ -93,7 +89,6 @@ category: environment
 - **Required reviewers**: 1 (one approval required; increase to 2 when team grows)
 - **Status checks**: Required (CI + staging validation)
 - **Dismiss stale reviews**: Yes
-- **Require last push approval**: Yes
 - **Force push**: Blocked
 - **Admin bypass**: No (no pull request bypass — admins must follow the flow)
 - **Direct push**: Blocked (only release/hotfix branches merge here)
