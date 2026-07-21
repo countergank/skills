@@ -15,14 +15,14 @@ category: environment
 |--------|------|:---:|:---:|
 | `develop` | Integration branch — all features merge here first | Yes | 1 |
 | `staging` | Pre-production mirror — curation testing before production | No | 1 |
-| `main` | Production source — always deployable, protected | No | 2 |
+| `main` | Production source — always deployable, protected | No | 1 |
 
 ## Branch Protection Settings
 
 | Setting | `develop` | `staging` | `main` |
 |---------|-----------|-----------|--------|
 | Require pull request | Yes | Yes | Yes |
-| Required reviewers | 1 | 1 | 2 |
+| Required reviewers | 1 | 1 | 1 |
 | Dismiss stale reviews | Yes | Yes | Yes |
 | Require last push approval | Yes | Yes | Yes |
 | Require status checks | Yes | Yes | Yes |
@@ -90,7 +90,7 @@ category: environment
 
 **Intent**: Production source — highest protection, multiple approvals required.
 
-- **Required reviewers**: 2 (two distinct approvals)
+- **Required reviewers**: 1 (one approval required; increase to 2 when team grows)
 - **Status checks**: Required (CI + staging validation)
 - **Dismiss stale reviews**: Yes
 - **Require last push approval**: Yes
@@ -120,7 +120,7 @@ Branch protection enforces the promotion chain by controlling which branches can
 |------------|-------------------|
 | Feature → `develop` | PR required, squash merge. 1 reviewer + CI checks. Admin can bypass PR when working solo. |
 | `release/*` → `staging` | PR required from `release/*` only. 1 reviewer + CI checks. No admin bypass. |
-| `release/*` → `main` | PR required from `release/*` only. 2 reviewers + CI/staging checks. No admin bypass. |
+| `release/*` → `main` | PR required from `release/*` only. 1 reviewer + CI/staging checks. No admin bypass. Increase to 2 reviewers when team grows. |
 | `hotfix/*` → `main` | PR required from `hotfix/*` only. Bypasses staging entirely — emergency path. |
 | `main` → `develop` | Backmerge allowed. Protected branch pushing to less-protected branch — no conflict. |
 
@@ -140,8 +140,8 @@ Branch protection enforces the promotion chain by controlling which branches can
 ✅ Good: PR targets develop for a feature branch — squash merge, 1 reviewer, CI must pass
 ✅ Good: Solo dev merges to develop using admin bypass — temporary, remove when team grows
 ✅ Good: release/1.2.0 PR targets staging — 1 reviewer required, CI must pass, no admin bypass
-✅ Good: release/1.2.0 PR targets main — 2 reviewers required, CI + staging validation
-✅ Good: hotfix/critical-fix PR targets main — bypasses staging, 2 reviewers (or admin merge)
+✅ Good: release/1.2.0 PR targets main — 1 reviewer required, CI + staging validation (increase to 2 when team grows)
+✅ Good: hotfix/critical-fix PR targets main — bypasses staging, 1 reviewer (or admin merge)
 ✅ Good: main backmerged to develop — protected pushing to less-protected, allowed
 ✅ Good: All branches have "Include administrators" enabled
 ✅ Good: Stale review dismissed after new commits — re-approval required
