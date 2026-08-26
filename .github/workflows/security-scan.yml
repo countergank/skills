@@ -3,7 +3,7 @@ name: SkillSpector Security Scan
 on:
   pull_request:
   push:
-    branches: [main, develop]
+    branches: [main, staging, develop]
 
 jobs:
   security-scan:
@@ -65,8 +65,13 @@ jobs:
             uv run --project /tmp/skillspector skillspector scan \
               "skills/$skill" --no-llm --format sarif -o "report-$skill.sarif" || true
             if [ -f "report-$skill.sarif" ]; then
+              # Give each skill a unique automation run ID so CodeQL
+              # accepts multiple runs in the same upload (one per skill).
+              jq --arg skill "$skill" \
+                '.runs[].automationDetails |= (. // {}) | .runs[].automationDetails.id = "skillspector/\($skill)"' \
+                "report-$skill.sarif" > "fixed-$skill.sarif"
               jq -s '{version:"2.1.0","$schema":.[0]."$schema","runs":[.[].runs[]?]}' \
-                merged.sarif "report-$skill.sarif" > tmp.sarif && mv tmp.sarif merged.sarif
+                merged.sarif "fixed-$skill.sarif" > tmp.sarif && mv tmp.sarif merged.sarif
             fi
           done
 
@@ -77,10 +82,9 @@ jobs:
 
       - name: Upload SARIF
         if: always() && steps.scan.outcome != 'skipped'
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: merged.sarif
-          category: skillspector
           wait-for-processing: true
 
       - name: Fail on findings
