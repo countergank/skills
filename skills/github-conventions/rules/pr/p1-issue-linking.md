@@ -52,7 +52,7 @@ GitHub keywords close GitHub issues; `fixes COU-###` drives Linear status automa
 **Examples**:
 ```
 ✅ Good: PR description includes "Closes #42"
-✅ Good: Commitment footer: "Refs #78"
+✅ Good: Commit footer: "Refs #78"
 ✅ Good: PR description includes "fixes COU-240"   ← Linear magic word (see linear-tickets)
 ❌ Bad:  "this should fix issue 42"              ← not a recognized keyword
 ❌ Bad:  Issue #42 is still open after merge     ← keyword was missing
