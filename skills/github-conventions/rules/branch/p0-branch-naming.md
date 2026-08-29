@@ -7,7 +7,7 @@ category: branch
 
 **Do**: Name branches as `type/description` using lowercase-kebab-case, where `type` matches one of the allowed branch types and `description` is a short summary of the change.
 **Avoid**: Personal names in branches (`john/fix-thing`), date prefixes (`2024-01-fix`), ticket-only names (`JIRA-123`), uppercase letters, or underscores.
-**Reference**: [GitHub Flow](https://docs.github.com/en/get-started/using-github/github-flow)
+**Reference**: [GitHub Flow](https://docs.github.com/en/get-started/using-github/github-flow); ticket-ID slugs: the `linear-tickets` skill (`rules/integration/p1-github-integration.md`) is the single source for `COU-###` naming.
 
 ## Allowed Branch Types
 
@@ -31,12 +31,13 @@ category: branch
 2. **Use kebab-case** — hyphens separate words, never underscores or camelCase.
 3. **Keep description concise** — 3-5 words maximum.
 4. **No personal prefixes** — the author is tracked in git history and PR metadata.
-5. **Ticket numbers optional** — `feat/PROJ-42-add-oauth` is fine, but `feat/add-oauth` is preferred.
+5. **Ticket slug optional** — branch `type/COU-###-descripcion` is valid when the work links to a Linear ticket, e.g. `fix/COU-240-arreglar-scroll`. The `COU-###` slug format is defined by the `linear-tickets` skill (single source), not re-specified here. Without a ticket, `feat/add-oauth` is preferred.
 
 **Examples**:
 ```
 ✅ Good: feat/oauth2-login
 ✅ Good: fix/null-preferences-500
+✅ Good: fix/COU-240-arreglar-scroll      ← ticket slug (format defined by linear-tickets)
 ✅ Good: docs/api-quickstart
 ❌ Bad:  john/fix-auth                  ← personal prefix
 ❌ Bad:  feat/add_OAuth2_Login          ← underscores + uppercase
