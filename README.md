@@ -17,6 +17,11 @@ This discovers all skills under `skills/` and installs them to your agent's skil
 | Skill | Description |
 |-------|-------------|
 | `nestjs-backend` | Production-ready NestJS backend development. Modules, controllers, DI, guards, pipes, TypeORM, Prisma, JWT auth, Swagger, testing, Docker. |
+| `react-frontend` | Modern React 19 frontend development with TypeScript 5, Vite, and Vitest — 87 WCAG 2.2-compliant rules across 10 categories. |
+| `github-conventions` | Authoritative GitHub conventions: conventional commits, branch naming, PR templates, issue linking, changelog. |
+| `git-environment-flow` | Org-wide Git environment branch model, promotion flow, release lifecycle, and deployment tracking. |
+| `kubernetes-best-practices` | Kubernetes and CDK8s infrastructure best practices: Deployments, Services, Ingress, NetworkPolicies, secrets. |
+| `linear-tickets` | Org-standard Linear ticket authoring and integration: Spanish scannable titles, complete descriptions, testable AC, and `COU-###`/`fixes` GitHub linkage. |
 
 ## Developer Tools
 
