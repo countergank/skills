@@ -22,6 +22,7 @@ This discovers all skills under `skills/` and installs them to your agent's skil
 | `git-environment-flow` | Org-wide Git environment branch model, promotion flow, release lifecycle, and deployment tracking. |
 | `kubernetes-best-practices` | Kubernetes and CDK8s infrastructure best practices: Deployments, Services, Ingress, NetworkPolicies, secrets. |
 | `linear-tickets` | Org-standard Linear ticket authoring and integration: Spanish scannable titles, complete descriptions, testable AC, and `COU-###`/`fixes` GitHub linkage. |
+| `kickoff` | Session bootstrap: CodeGraph context, Linear tickets of the repo's project, base branch, branch naming, ODD tracking. Delegates every rule to `git-environment-flow`, `github-conventions` and `linear-tickets`. |
 
 ## Developer Tools
 

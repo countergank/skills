@@ -13,7 +13,7 @@ Activate at session start or before the first git action of a task. Read-only re
 ## Bootstrap Steps
 
 1. **Context** — map the affected area with CodeGraph (`init` when the index is missing); without an area, take it from the ticket in step 2. No CodeGraph: targeted reads.
-2. **Tickets** — query the open tickets of the project homonymous to this repo through the Linear GraphQL API, header `Authorization: $LINEAR_API_TOKEN`; read title, description and every acceptance criterion in full.
+2. **Tickets** — query the open tickets of the project homonymous to this repo through the Linear GraphQL API, header `Authorization: $LINEAR_API_TOKEN`; read title, description and every acceptance criterion in full. No open ticket: work from the scope the request names and say so.
 3. **Base branch** — take the target from `git-environment-flow`; when it disagrees with `github-conventions`, the target wins.
 4. **Branch** — create it from the latest base with the `github-conventions` naming contract; a ticket slug follows the `linear-tickets` format.
 5. **Tracking** — open the ODD tracking from gentle-ai (`odd/tasks/<feature>.md`) for work spanning sessions or separate deliverables; without ODD or `odd/`, the todo list only, never a new tree.
