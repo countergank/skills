@@ -150,3 +150,10 @@ corregir las contradicciones de las siete skills" con la descripción reescrita 
 → Criterios, 9 criterios cumplidos y 2 pendientes). Linear recalculó `branchName`, así que la rama
 local se renombró al nuevo valor; la anterior ya no existe. Sin commits ni push, el cambio no
 afecta historial.
+
+## Delivery
+
+- Slice: 765 líneas autoradas en 9 commits (53 archivos), por encima del corte de ~400.
+- Estrategia: un solo PR a `develop`, revisable commit por commit (uno por skill o concerniente).
+- Promoción: `release/1.4.0` desde `develop` → `staging` (`v1.4.0-rc1`) → `main` (`v1.4.0`) →
+  backmerge a `develop`, con `CHANGELOG.md` generado desde el historial de commits.
