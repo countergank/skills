@@ -3,7 +3,7 @@ priority: P3
 category: anti-patterns
 ---
 
-# No Image Digest Pinning (Advisory)
+# Pin Images by Digest (Advisory)
 
 **Do**: For maximum supply chain security, pin images to their SHA256 digest (e.g., `nginx@sha256:abc123...`) in addition to or instead of version tags. This guarantees the exact same image bytes are pulled every time.
 

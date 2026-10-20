@@ -13,7 +13,7 @@ category: mongodb
 ```yaml
 containers:
   - name: mongod
-    image: mongo:7.0
+    image: mongodb/mongodb-community-server:7.0
     args:
       - --tlsMode
       - requireTLS

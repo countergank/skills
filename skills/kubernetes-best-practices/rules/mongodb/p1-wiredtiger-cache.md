@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: mongodb
-        image: mongo:7.0
+        image: mongodb/mongodb-community-server:7.0
         args:
         - --wiredTigerCacheSizeGB=2
         resources:
@@ -29,3 +29,5 @@ spec:
           requests:
             memory: "4Gi"
 ```
+
+**Note**: Equal request and limit here is deliberate for databases — reserving the full amount up front prevents the OOM killer from terminating MongoDB mid-flush. This intentionally differs from the general 1.5–2x limit-to-request guidance in `resource-management/p0-memory-limits.md`.
