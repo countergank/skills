@@ -65,7 +65,7 @@ export class ProductionDeployment extends Construct {
       },
       memory: {
         request: k8s.Quantity.fromMebibytes(parseInt(memoryRequest)),
-        limit: k8s.Quantity.fromMebibytes(parseInt(memoryRequest)),
+        limit: k8s.Quantity.fromMebibytes(parseInt(memoryLimit)),
       },
       // Health probes (P0 reliability)
       readiness: plus.Probe.fromHttpGet(healthPath, {
@@ -96,7 +96,7 @@ export class ProductionDeployment extends Construct {
     // Revision history limit (P2 reliability)
     this.deployment.metadata.addLabel(
       'app.kubernetes.io/version',
-      image.split(':').pop() || 'latest'
+      image.split(':').pop() || 'unknown'
     );
 
     // Service

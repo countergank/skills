@@ -1,6 +1,7 @@
 # MongoDB StatefulSet Template — Production Configuration
 # Uses MongoDB Community Operator pattern.
-# Includes: PDB, TLS, backup sidecar, PVC Retain, anti-affinity.
+# Includes: PDB, TLS, PVC Retain, anti-affinity.
+# Backups: see rules/mongodb/p1-backup-schedule.md (no sidecar included in this template).
 # Reference: rules/mongodb/p0-persistent-storage.md
 #            rules/mongodb/p0-statefulset-required.md
 #            rules/mongodb/p0-auth-enabled.md
@@ -89,13 +90,28 @@ spec:
                 topologyKey: kubernetes.io/hostname
       template:
         spec:
+          # P1: Do not mount the service account token into the database pod
+          automountServiceAccountToken: false
           # P0: Security defaults
+          # Note: securityContext fields inside a MongoDBCommunity CR depend on
+          # how the operator merges this pod template.
           securityContext:
             runAsNonRoot: true
             runAsUser: 2000
             fsGroup: 2000
           containers:
             - name: mongod
+              # P0/P1: Container security hardening
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop: ["ALL"]
+                readOnlyRootFilesystem: true
+                seccompProfile:
+                  type: RuntimeDefault
+              # P1: Cap WiredTiger cache at ~50% of the 2Gi memory limit
+              args:
+                - --wiredTigerCacheSizeGB=1
               resources:
                 requests:
                   cpu: 500m
@@ -103,13 +119,24 @@ spec:
                 limits:
                   cpu: "2"
                   memory: 2Gi
-              # P0: Probes
+              # Writable paths required by mongod on a read-only root filesystem
+              # (data itself lives on the operator-managed PVC, not here)
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp
+                - name: var-run
+                  mountPath: /var/run
+              # P0: Probes (distinct: liveness = process alive, readiness = ready to serve)
+              # Note: this readiness check is intentionally unauthenticated — this
+              # template wires no credentials Secret. An authenticated check requires
+              # wiring the credentials Secret (e.g., via secretKeyRef env vars).
               readinessProbe:
                 exec:
                   command:
                     - mongosh
+                    - --quiet
                     - --eval
-                    - "db.adminCommand('ping')"
+                    - "db.runCommand({ hello: 1 }).ok"
                 initialDelaySeconds: 10
                 periodSeconds: 10
                 failureThreshold: 3
@@ -122,20 +149,8 @@ spec:
                 initialDelaySeconds: 30
                 periodSeconds: 20
                 failureThreshold: 5
-          # P1: Backup sidecar (example using mongodump)
-          # In production, use a dedicated backup operator (e.g., Percona Backup Manager)
-          # - name: backup-sidecar
-          #   image: myregistry/mongodb-backup:1.0.0
-          #   env:
-          #     - name: BACKUP_SCHEDULE
-          #       value: "0 2 * * *"  # Daily at 2 AM
-          #     - name: BACKUP_RETENTION_DAYS
-          #       value: "30"
-          #     - name: S3_BUCKET
-          #       value: "mongodb-backups-prod"
-          #   volumeMounts:
-          #     - name: backup-storage
-          #       mountPath: /backups
-          # volumes:
-          #   - name: backup-storage
-          #     emptyDir: {}
+          volumes:
+            - name: tmp
+              emptyDir: {}
+            - name: var-run
+              emptyDir: {}

@@ -13,7 +13,7 @@ category: mongodb
 ```yaml
 containers:
   - name: mongod
-    image: mongo:7.0
+    image: mongodb/mongodb-community-server:7.0
     args:
       - --auth
     env:
@@ -28,3 +28,5 @@ containers:
             name: mongodb-credentials
             key: password
 ```
+
+Note: the shipped template (`assets/mongodb-statefulset.yaml`) uses the MongoDBCommunity operator, which owns the StatefulSet.

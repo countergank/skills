@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: mongodb
-        image: mongo:7.0
+        image: mongodb/mongodb-community-server:7.0
       - name: mongodb-exporter
         image: percona/mongodb_exporter:0.40
         args:
