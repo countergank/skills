@@ -31,11 +31,11 @@ Activate when authoring, reviewing, or modifying Kubernetes manifests, Helm char
 | P1 | anti-patterns | 2 | no default namespace, missing probes |
 | P2 | security | 1 | pod security admission (advisory) |
 | P2 | resource-management | 1 | limit ranges |
-| P2 | reliability | 2 | revision history limit, image version comments |
+| P2 | reliability | 2 | revision history limit, pin image versions with digests |
 | P2 | observability | 1 | cost allocation |
 | P2 | naming-labels | 1 | version label |
 | P2 | mongodb | 3 | arbiter pattern, connection pooling, MongoDB exporter |
-| P3 | anti-patterns | 1 | no image digest (advisory) |
+| P3 | anti-patterns | 1 | pin images by digest (advisory) |
 
 **Totals**: 67 rules — 29 P0 + 28 P1 + 9 P2 + 1 P3 across 7 categories
 
@@ -68,7 +68,7 @@ Activate when authoring, reviewing, or modifying Kubernetes manifests, Helm char
 
 ## Assets
 
-- `assets/cdk8s-construct.ts` — cdk8s Deployment + Service + Ingress construct with defaults
+- `assets/cdk8s-construct.ts` — cdk8s Deployment + Service construct with defaults
 - `assets/network-policy.yaml` — Default-deny ingress/egress with explicit allow rules
 - `assets/sealed-secret-example.yaml` — Bitnami SealedSecret pattern for sensitive data
 - `assets/service-monitor.yaml` — Prometheus ServiceMonitor for metrics scraping

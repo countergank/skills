@@ -5,9 +5,9 @@ category: resource-management
 
 # Set imagePullPolicy Appropriately
 
-**Do**: Set `imagePullPolicy: IfNotPresent` for versioned tags and `Always` for mutable tags (e.g., `latest`, `main`), ensuring predictable pull behavior.
+**Do**: Pin production images by tag or digest (see `p3-no-image-digest.md` and `p2-image-version-comments.md`) and set `imagePullPolicy: IfNotPresent` for versioned tags, ensuring predictable pull behavior. `pullPolicy: Always` is only for a mutable tag that cannot be avoided in a non-production environment.
 
-**Avoid**: Using the `latest` tag without an explicit pull policy, which forces `Always` and causes unnecessary registry traffic and deployment delays.
+**Avoid**: Using the `latest` tag in any environment, and using the `latest` tag without an explicit pull policy, which forces `Always` and causes unnecessary registry traffic and deployment delays.
 
 **Example**:
 ```yaml
@@ -24,5 +24,5 @@ spec:
           imagePullPolicy: IfNotPresent  # Versioned tag — pull only if missing
         - name: sidecar
           image: myregistry/sidecar:main
-          imagePullPolicy: Always  # Mutable tag — always pull latest
+          imagePullPolicy: Always  # Mutable tag — non-production only; production images must be pinned
 ```

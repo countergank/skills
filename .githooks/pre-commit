@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+# Tripwire for the rule in AGENTS.md: no commit without explicit human authorization.
+# The person approves after seeing the diff; that approval is the only reason to set
+# GIT_COMMIT_APPROVED=1. An agent never sets it on its own.
+if [ "$GIT_COMMIT_APPROVED" != "1" ]; then
+  echo "commit blocked: no explicit authorization for this commit."
+  echo "Show 'git status --short' and 'git diff --stat', ask the person,"
+  echo "then rerun with GIT_COMMIT_APPROVED=1 git commit ..."
+  exit 1
+fi
+exit 0

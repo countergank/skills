@@ -12,6 +12,17 @@ npx skills add countergank/skills
 
 This discovers all skills under `skills/` and installs them to your agent's skill directory.
 
+## Commit Gate
+
+This repository ships a `pre-commit` hook that refuses every commit until a person authorizes it:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+The hook blocks unless `GIT_COMMIT_APPROVED=1` is set in the environment, which is the signal that
+the person saw the diff and said yes. See `AGENTS.md`.
+
 ## Available Skills
 
 | Skill | Description |
@@ -22,7 +33,7 @@ This discovers all skills under `skills/` and installs them to your agent's skil
 | `git-environment-flow` | Org-wide Git environment branch model, promotion flow, release lifecycle, and deployment tracking. |
 | `kubernetes-best-practices` | Kubernetes and CDK8s infrastructure best practices: Deployments, Services, Ingress, NetworkPolicies, secrets. |
 | `linear-tickets` | Org-standard Linear ticket authoring and integration: Spanish scannable titles, complete descriptions, testable AC, and `COU-###`/`fixes` GitHub linkage. |
-| `kickoff` | Session bootstrap: CodeGraph context, Linear tickets of the repo's project, base branch, branch naming, ODD tracking. Delegates every rule to `git-environment-flow`, `github-conventions` and `linear-tickets`. |
+| `kickoff` | Session bootstrap with hard gates: Linear project, ticket readiness (project, estimate, assignee), ticket state per moment, branch created from Linear's `branchName`, ODD tracking. Nothing is implemented without a ticket, and no commit happens without explicit authorization. Delegates every rule to `git-environment-flow`, `github-conventions` and `linear-tickets`. |
 
 ## Developer Tools
 

@@ -23,7 +23,7 @@ spec:
         spec:
           containers:
             - name: mongodump
-              image: mongo:7.0
+              image: mongodb/mongodb-community-server:7.0
               command:
                 - mongodump
                 - --host=mongodb-0.mongodb-headless:27017
@@ -45,3 +45,5 @@ spec:
                       key: password
           restartPolicy: OnFailure
 ```
+
+Note: the shipped template (`assets/mongodb-statefulset.yaml`) uses the MongoDBCommunity operator, which owns the StatefulSet.

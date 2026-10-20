@@ -28,8 +28,10 @@ spec:
     spec:
       containers:
         - name: mongod
-          image: mongo:7.0
+          image: mongodb/mongodb-community-server:7.0
           ports:
             - containerPort: 27017
               name: mongodb
 ```
+
+Note: the shipped template (`assets/mongodb-statefulset.yaml`) uses the MongoDBCommunity operator, which owns the StatefulSet.
