@@ -81,7 +81,6 @@ export class ProductionDeployment extends Construct {
           drop: ['ALL'],
         },
       },
-      // Containers should log to stdout/stderr — no file logging
     });
 
     this.deployment.metadata.addLabel(

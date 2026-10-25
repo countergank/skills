@@ -10,7 +10,7 @@ export default defineConfig({
     },
   },
   test: {
-    // Use jsdom for DOM-dependent React component tests
+    // Component tests need a DOM; jsdom provides it without a browser
     environment: "jsdom",
     globals: true,
     // Setup file for Testing Library matchers
