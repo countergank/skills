@@ -27,7 +27,7 @@ Before clicking "Request Review", verify:
 ### Documentation
 - [ ] PR description is complete (Summary, Changes, Testing)
 - [ ] README or guides updated if user-facing behavior changed
-- [ ] Inline comments explain *why*, not *what* (the code shows what)
+- [ ] Code comments and JSDoc follow the `code-comments` skill
 
 ### Conventions
 - [ ] PR title follows `type(scope): description` format

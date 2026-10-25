@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- **code-comments**: comment and JSDoc standard — no comments without the nesting or hidden-effect signal, classic typed JSDoc when it fires, and no ticket or priority-tag references in code
+
 ## [1.4.0] - 2026-10-20
 
 ### Added
