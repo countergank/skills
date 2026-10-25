@@ -1,7 +1,3 @@
-// cdk8s Construct Template — Production Deployment with Security Defaults
-// This is a structural template (not runnable as-is) demonstrating
-// resource limits, probes, and securityContext defaults for cdk8s.
-
 import { Construct } from 'constructs';
 import * as k8s from 'cdk8s';
 import * as plus from 'cdk8s-plus-28';
@@ -47,18 +43,16 @@ export class ProductionDeployment extends Construct {
       ...labels,
     };
 
-    // Deployment with security defaults
     this.deployment = new plus.Deployment(this, 'Deployment', {
       replicas,
       selector: name,
       metadata: { labels: defaultLabels },
     });
 
-    const container = this.deployment.addContainer({
+    this.deployment.addContainer({
       name,
       image,
       portNumber: port,
-      // Resource requests and limits (P0)
       cpu: {
         request: k8s.Quantity.fromString(cpuRequest),
         limit: k8s.Quantity.fromString(cpuLimit),
@@ -67,7 +61,6 @@ export class ProductionDeployment extends Construct {
         request: k8s.Quantity.fromMebibytes(parseInt(memoryRequest)),
         limit: k8s.Quantity.fromMebibytes(parseInt(memoryLimit)),
       },
-      // Health probes (P0 reliability)
       readiness: plus.Probe.fromHttpGet(healthPath, {
         port,
         initialDelay: k8s.Duration.seconds(5),
@@ -78,7 +71,6 @@ export class ProductionDeployment extends Construct {
         initialDelay: k8s.Duration.seconds(15),
         period: k8s.Duration.seconds(20),
       }),
-      // Security context (P0 security)
       securityContext: {
         ensureNonRoot: true,
         readOnlyRootFilesystem: true,
@@ -89,17 +81,14 @@ export class ProductionDeployment extends Construct {
           drop: ['ALL'],
         },
       },
-      // Logging (P0 observability)
       // Containers should log to stdout/stderr — no file logging
     });
 
-    // Revision history limit (P2 reliability)
     this.deployment.metadata.addLabel(
       'app.kubernetes.io/version',
       image.split(':').pop() || 'unknown'
     );
 
-    // Service
     this.service = new plus.Service(this, 'Service', {
       selector: this.deployment,
       ports: [{ port, targetPort: port }],
