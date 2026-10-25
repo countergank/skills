@@ -30,10 +30,10 @@ the person saw the diff and said yes. See `AGENTS.md`.
 | `nestjs-backend` | Production-ready NestJS backend development. Modules, controllers, DI, guards, pipes, TypeORM, Prisma, JWT auth, Swagger, testing, Docker. |
 | `react-frontend` | Modern React 19 frontend development with TypeScript 5, Vite, and Vitest — 87 WCAG 2.2-compliant rules across 10 categories. |
 | `github-conventions` | Authoritative GitHub conventions: conventional commits, branch naming, PR templates, issue linking, changelog. |
+| `code-comments` | Comment and JSDoc standard: self-sufficient code carries no comments; JSDoc fires only for nesting or hidden effects, types must match the signature, and no ticket or priority-tag references in code. |
 | `git-environment-flow` | Org-wide Git environment branch model, promotion flow, release lifecycle, and deployment tracking. |
 | `kubernetes-best-practices` | Kubernetes and CDK8s infrastructure best practices: Deployments, Services, Ingress, NetworkPolicies, secrets. |
 | `linear-tickets` | Org-standard Linear ticket authoring and integration: Spanish scannable titles, complete descriptions, testable AC, and `COU-###`/`fixes` GitHub linkage. |
-| `code-comments` | Comment and JSDoc standard: self-sufficient code carries no comments; JSDoc fires only for nesting or hidden effects, types must match the signature, and no ticket or priority-tag references in code. |
 | `kickoff` | Session bootstrap with hard gates: Linear project, ticket readiness (project, estimate, assignee), ticket state per moment, branch created from Linear's `branchName`, ODD tracking. Nothing is implemented without a ticket, and no commit happens without explicit authorization. Delegates every rule to `git-environment-flow`, `github-conventions` and `linear-tickets`. |
 
 ## Developer Tools

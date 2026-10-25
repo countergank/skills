@@ -23,8 +23,15 @@ def flush_metrics(queue):
 
 ```go
 // ❌ Restates the signature: no comment
-// GetUser returns the user.
+func GetUser(id string) (*User, error)
 
-// ✅ Nesting inside: the retry fallback needs one stated anchor
-func (c *Client) Fetch(ctx context.Context, id string) (*User, error)
+// ✅ Nesting: the inner guard is invisible from the signature
+func (c *Client) Fetch(ctx context.Context, id string) (*User, error) {
+	for attempt := 0; attempt < maxAttempts; attempt++ {
+		if err := c.limiter.Wait(ctx); err != nil {
+			// A rate-limit error must not consume the remaining retries
+			return nil, err
+		}
+	}
+}
 ```
