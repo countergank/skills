@@ -22,16 +22,15 @@ def flush_metrics(queue):
 ```
 
 ```go
-// ❌ Restates the signature: no comment
+// ❌ Restates the signature: no doc comment
+// GetUser returns the user with the given id.
 func GetUser(id string) (*User, error)
 
-// ✅ Nesting: the inner guard is invisible from the signature
+// ✅ Hidden effect: writes `audit_log`; the name does not announce it
+//
+// Fetch reads the user and records the access in the audit log.
 func (c *Client) Fetch(ctx context.Context, id string) (*User, error) {
-	for attempt := 0; attempt < maxAttempts; attempt++ {
-		if err := c.limiter.Wait(ctx); err != nil {
-			// A rate-limit error must not consume the remaining retries
-			return nil, err
-		}
-	}
+	defer c.audit.Record(ctx, id)
+	return c.store.Get(ctx, id)
 }
 ```
