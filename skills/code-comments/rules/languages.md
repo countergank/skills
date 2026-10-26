@@ -22,9 +22,12 @@ def flush_metrics(queue):
 ```
 
 ```go
-// ❌ Restates the signature: no doc comment
+// ❌ A doc comment that restates the signature
 // GetUser returns the user with the given id.
 func GetUser(id string) (*User, error)
+
+// ✅ No comment: the signature already says it
+func GetAccount(id string) (*Account, error)
 
 // ✅ Hidden effect: writes `audit_log`; the name does not announce it
 //
