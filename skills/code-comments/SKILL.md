@@ -17,7 +17,6 @@ Activate whenever writing, editing, or reviewing comments, JSDoc, docstrings, or
 |-----------|-------|
 | `rules/comments.md` | When a comment is allowed: nesting or a hidden effect, nothing else |
 | `rules/jsdoc.md` | JSDoc block contents and type matching with the signature |
-| `rules/references.md` | No tickets, PRs, or priority tags inside code comments |
 | `rules/languages.md` | Same threshold for Go, Python, and YAML |
 
 Self-sufficient code carries no comments; no signal, no JSDoc. Length alone is not complexity.

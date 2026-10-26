@@ -1,7 +1,7 @@
 # Comment only when the body stops a reader
 
 **Do**: leave code self-sufficient and comment only when the body stops a reader for one of the two signals below.
-**Avoid**: file-header banners, section labels, `TODO` without an owner, and comments that restate the code.
+**Avoid**: file-header banners, section labels, `TODO` without an owner, ticket IDs or priority tags, and comments that restate the code.
 
 ## The two signals
 
