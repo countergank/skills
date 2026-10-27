@@ -39,7 +39,16 @@ S9. Las reglas nuevas se escriben en positivo: declaran qué se hace o qué se d
 
 S10. Cada ticket derivado incluye un eval de tres prompts corridos **con el set original y con el set
 reducido**, en ese orden. El criterio es que **ninguna métrica empeore**; que mejore no es requisito. Un
-drop que degrada se revierte y vuelve al set. Además se mide antes y después con el mismo comando.
+drop que degrada se revierte y vuelve al set.
+
+S11. La medición antes/después usa este comando, idéntico en las dos versiones y sobre el mismo árbol, y
+su resultado se registra en la tabla de auditoría de este documento:
+
+```bash
+find skills/<name> -name '*.md' | xargs wc -l    # líneas totales
+find skills/<name>/rules -name '*.md' | wc -l    # cantidad de archivos de regla
+grep -rc "si .* y no .* salvo" skills/<name>     # condicionales anidados
+```
 
 ## Taxonomía
 
@@ -72,9 +81,10 @@ drop que degrada se revierte y vuelve al set. Además se mide antes y después c
 | `git-environment-flow` | catálogo | 49 | ~4.000 | 6 | 5 | 1 | 0 | 1 | 5 archivos |
 | `kickoff` | procedimental | 161 | ~1.195 | 0 | — | — | — | — | 1 archivo |
 
-Totales por skill. Dos de las tablas de auditoría incluyen la fila del `SKILL.md` y la de
-`kubernetes-best-practices` deja 7 archivos sin clasificar; los tickets derivados vuelven a contar
-antes de borrar, con el mismo comando, y ese conteo es el que vale.
+Los baldes no suman la columna Reglas en tres filas, y se deja dicho en lugar de forzar el número:
+`kubernetes-best-practices` clasifica 60 de 67 archivos (7 sin clasificar), y `linear-tickets` y
+`git-environment-flow` cuentan la fila del `SKILL.md` dentro de keep, por eso suman uno más. Cada ticket
+derivado vuelve a contar antes de borrar con el comando de S11, y ese conteo es el que vale.
 
 ### Detalle por skill
 
@@ -125,6 +135,9 @@ del recorte.
 
 ## Conflictos y duplicados
 
+Los conflictos de esta lista no se repiten en el detalle por skill: ahí solo constan las fusiones que no
+implican contradicción.
+
 1. `kubernetes-best-practices`: ratios de CPU contradictorios entre `p0-cpu-limits` y
    `p1-target-cpu-memory-ratio`. Dueño propuesto: `resource-management.md`, unificado.
 2. `nestjs-backend`: `p1-dto-validation` duplica `p0-validation-pipe`. Dueño: `security.md`.
@@ -145,8 +158,8 @@ medición propia, con límites explícitos: un modelo, una tarea, tres corridas 
 
 ## Riesgo abierto
 
-El plan borra 85 reglas apoyado en un juicio —"está en la doc del framework, el agente ya lo hace"— que
-solo se validó en un caso medido (`references.md`, ablación de tres corridas). Los otros 84 son hipótesis.
+El plan borra 86 reglas apoyado en un juicio —"está en la doc del framework, el agente ya lo hace"— que
+solo se validó en un caso medido (`references.md`, ablación de tres corridas). Las otras 85 son hipótesis.
 Por eso S10 exige el eval antes/después con criterio de no degradación: es la única forma de que un drop
 equivocado se detecte antes de mergear y no seis meses después. Donde el riesgo es bajo por cantidad de
 drops (`linear-tickets` 1, `git-environment-flow` 1, `kubernetes` 5) el eval puede acotarse; donde es alto
