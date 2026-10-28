@@ -7,7 +7,7 @@ category: integration
 
 **Do**: Usa como rama el campo `branchName` que devuelve Linear, tal cual, y `fixes COU-###` como keyword en la descripción del PR, para que la automatización de estado de Linear corra sin actualizaciones manuales. Este skill es la FUENTE ÚNICA del contrato.
 **Avoid**: Duplicar la definición del contrato `COU-###` en otros skills; componer, acortar o "mejorar" el nombre de la rama, que rompe la automatización de estados.
-**Reference**: `git-environment-flow` y `github-conventions` lo referencian; no lo redefinen. Ver la rama en `rules/branch/p0-branch-naming.md` y el PR en `rules/pr/p1-issue-linking.md` de github-conventions.
+**Reference**: `git-environment-flow` y `github-conventions` lo referencian; no lo redefinen. Ver la rama en `rules/branch.md` y el PR en `rules/pr.md` de github-conventions.
 
 ## Contrato
 
