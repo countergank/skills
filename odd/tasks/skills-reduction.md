@@ -75,7 +75,7 @@ grep -rc "si .* y no .* salvo" skills/<name>     # condicionales anidados
 |---|---|---|---|---|---|---|---|---|---|
 | `react-frontend` | catálogo | 76 | ~12.100 | 87 | 32 | 17 | 7 | 31 | 10 archivos |
 | `nestjs-backend` | catálogo | 40 | ~3.100 | 68 | 20 | 1 | 10 | 37 | 6 archivos |
-| `kubernetes-best-practices` | catálogo | 75 | ~6.900 | 67 | 24 | 11 | 20 | 5 | 7 archivos |
+| `kubernetes-best-practices` | catálogo | 27 | ~320 | 67 | 47 | 0 | 15 | 5 | 7 archivos |
 | `github-conventions` | catálogo | 29 | ~290 | 14 | 3 | 0 | 7 | 4 | 3 archivos |
 | `linear-tickets` | catálogo | 63 | ~2.750 | 7 | 6 | 0 | 1 | 1 | 5 archivos |
 | `git-environment-flow` | catálogo | 49 | ~4.000 | 6 | 5 | 1 | 0 | 1 | 5 archivos |
@@ -222,3 +222,9 @@ changelog no pasó a herramienta: release-please no se adopta en este repo, así
 como prosa y el gate se reporta como no habilitado (D1 del documento de la feature). Tres referencias
 muertas corregidas en el mismo ticket: dos en `git-environment-flow/rules/release/p0-release-automation.md`
 y una en `linear-tickets/rules/integration/p1-github-integration.md`.
+
+L8. COU-335 entregado: 67 archivos de regla → 7 dominios (uno por categoría existente), 2054 → 1236
+líneas markdown, `SKILL.md` 75 → 27. Baldes medidos: 47 keep, 15 merge, 5 drop. Las 11 tool rules se
+quedaron como prosa: el gate no se puede habilitar en este repo, que no tiene manifiestos ni cluster, y
+`references/polaris-default.yaml` documenta los checks de Polaris en vez de correrlos. La contradicción
+de ratios se resolvió en una sola regla con CPU 2-5x y memoria 1.2-1.5x.
