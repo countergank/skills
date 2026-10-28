@@ -7,15 +7,14 @@ category: release
 
 **Do**: Automate version determination from commit history, generate changelog following Keep a Changelog sections, create annotated tags with version and date.
 **Avoid**: Auto-push to remote, release on empty changes, override SemVer priority without explicit flag, create lightweight tags.
-**Reference**: `github-conventions/rules/meta/p0-type-definitions.md` for SemVer mapping, `github-conventions/rules/meta/p1-changelog-automation.md` for changelog format, `git-environment-flow/rules/release/p1-release-lifecycle.md` for branch flow.
+**Reference**: `github-conventions/rules/commit.md` for SemVer mapping and changelog format, `git-environment-flow/rules/release/p1-release-lifecycle.md` for branch flow.
 
 ## Prerequisites
 
 Before executing this procedure, load and understand these rule files:
 
-1. `github-conventions/rules/meta/p0-type-definitions.md` — canonical commit types and SemVer impact mapping
-2. `github-conventions/rules/meta/p1-changelog-automation.md` — Keep a Changelog section mapping and format
-3. `git-environment-flow/rules/release/p1-release-lifecycle.md` — release branch lifecycle, tag format, and merge flow
+1. `github-conventions/rules/commit.md` — canonical commit types, SemVer impact mapping, and Keep a Changelog section mapping
+2. `git-environment-flow/rules/release/p1-release-lifecycle.md` — release branch lifecycle, tag format, and merge flow
 
 ## Procedure
 
