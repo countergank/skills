@@ -74,7 +74,7 @@ grep -rc "si .* y no .* salvo" skills/<name>     # condicionales anidados
 | Skill | Tipo | `SKILL.md` | Palabras | Reglas | keep | tool | merge | drop | Destino |
 |---|---|---|---|---|---|---|---|---|---|
 | `react-frontend` | catálogo | 76 | ~12.100 | 87 | 32 | 17 | 7 | 31 | 10 archivos |
-| `nestjs-backend` | catálogo | 67 | ~6.200 | 68 | 19 | 1 | 10 | 38 | 7 archivos |
+| `nestjs-backend` | catálogo | 40 | ~3.100 | 68 | 20 | 1 | 10 | 37 | 6 archivos |
 | `kubernetes-best-practices` | catálogo | 75 | ~6.900 | 67 | 24 | 11 | 20 | 5 | 7 archivos |
 | `github-conventions` | catálogo | 51 | ~5.000 | 14 | 3 | 1 | 0 | 10 | 3 archivos |
 | `linear-tickets` | catálogo | 63 | ~2.750 | 7 | 6 | 0 | 1 | 1 | 5 archivos |
@@ -207,3 +207,11 @@ prop no adjunta nada y rompe en silencio; `advanced-caching` mezclaba RSC con ca
 referencia rota.
 
 L5. La auditoría recomendó no partir `kickoff`; la decisión original se revirtió con ese argumento.
+
+L6. COU-334 entregado: 68 archivos de regla → 6 dominios (`controllers`, `security`, `data`, `auth`,
+`api`, `operations`), 1537 → 557 líneas de markdown, `SKILL.md` 67 → 40. Baldes medidos: 20 keep,
+10 merge, 1 tool, 37 drop. Dos desvíos del conteo del plan, con motivo: `p1-guard-composition`
+sobrevive en `auth.md` (el orden «autenticar antes de autorizar» es la otra mitad de la regla de
+guards, y sin él `auth` quedaba con una sola regla) y `p1-fastify-adapter` se une al Quick Reference
+en lugar de borrarse. El «7 archivos» del título cuenta el `SKILL.md`, que es el séptimo archivo que
+lee un agente.
