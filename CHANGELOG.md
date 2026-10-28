@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- **react-frontend**: reduce 87 rule files to 10 domain files (`rules/<domain>.md`, one level) — 31 rules dropped as model defaults, 17 moved to `assets/eslint.config.js` as lint checks, 7 merged into their targets, and `forwardref-deprecated` rewritten as a React 19/18 version discriminator plus `advanced-caching` scoped to `staleTime`/`gcTime` and `Cache-Control`; `SKILL.md` rewritten to a ten-domain table
+
 ### Added
 
 - **code-comments**: comment and JSDoc standard — no comments without the nesting or hidden-effect signal, classic typed JSDoc when it fires, and no ticket or priority-tag references in code

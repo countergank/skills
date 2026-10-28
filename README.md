@@ -28,7 +28,7 @@ the person saw the diff and said yes. See `AGENTS.md`.
 | Skill | Description |
 |-------|-------------|
 | `nestjs-backend` | Production-ready NestJS backend development. Modules, controllers, DI, guards, pipes, TypeORM, Prisma, JWT auth, Swagger, testing, Docker. |
-| `react-frontend` | Modern React 19 frontend development with TypeScript 5, Vite, and Vitest — 87 WCAG 2.2-compliant rules across 10 categories. |
+| `react-frontend` | Modern React 19 SPA development with TypeScript 5, Vite, and Vitest — ten WCAG 2.2-compliant domain files with one decision per rule. |
 | `github-conventions` | Authoritative GitHub conventions: conventional commits, branch naming, PR templates, issue linking, changelog. |
 | `code-comments` | Comment and JSDoc standard: self-sufficient code carries no comments; JSDoc fires only for nesting or hidden effects, types must match the signature, and no ticket or priority-tag references in code. |
 | `git-environment-flow` | Org-wide Git environment branch model, promotion flow, release lifecycle, and deployment tracking. |
