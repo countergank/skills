@@ -29,7 +29,7 @@ the person saw the diff and said yes. See `AGENTS.md`.
 |-------|-------------|
 | `nestjs-backend` | Production-ready NestJS backend development — six domain files for controllers, security, data, auth, API contract and operations, one decision per rule with one ✅/❌ pair. |
 | `react-frontend` | Modern React 19 SPA development with TypeScript 5, Vite, and Vitest — ten WCAG 2.2-compliant domain files with one decision per rule. |
-| `github-conventions` | Authoritative GitHub conventions: conventional commits, branch naming, PR templates, issue linking, changelog. |
+| `github-conventions` | Authoritative GitHub conventions — three domain files for commits, branches and pull requests, one decision per rule with one ✅/❌ pair, plus the commit and pull request templates. |
 | `code-comments` | Comment and JSDoc standard: self-sufficient code carries no comments; JSDoc fires only for nesting or hidden effects, types must match the signature, and no ticket or priority-tag references in code. |
 | `git-environment-flow` | Org-wide Git environment branch model, promotion flow, release lifecycle, and deployment tracking. |
 | `kubernetes-best-practices` | Kubernetes and CDK8s infrastructure best practices: Deployments, Services, Ingress, NetworkPolicies, secrets. |

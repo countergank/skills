@@ -76,7 +76,7 @@ grep -rc "si .* y no .* salvo" skills/<name>     # condicionales anidados
 | `react-frontend` | catálogo | 76 | ~12.100 | 87 | 32 | 17 | 7 | 31 | 10 archivos |
 | `nestjs-backend` | catálogo | 40 | ~3.100 | 68 | 20 | 1 | 10 | 37 | 6 archivos |
 | `kubernetes-best-practices` | catálogo | 75 | ~6.900 | 67 | 24 | 11 | 20 | 5 | 7 archivos |
-| `github-conventions` | catálogo | 51 | ~5.000 | 14 | 3 | 1 | 0 | 10 | 3 archivos |
+| `github-conventions` | catálogo | 29 | ~290 | 14 | 3 | 0 | 7 | 4 | 3 archivos |
 | `linear-tickets` | catálogo | 63 | ~2.750 | 7 | 6 | 0 | 1 | 1 | 5 archivos |
 | `git-environment-flow` | catálogo | 49 | ~4.000 | 6 | 5 | 1 | 0 | 1 | 5 archivos |
 | `kickoff` | procedimental | 161 | ~1.195 | 0 | — | — | — | — | 1 archivo |
@@ -215,3 +215,10 @@ sobrevive en `auth.md` (el orden «autenticar antes de autorizar» es la otra mi
 guards, y sin él `auth` quedaba con una sola regla) y `p1-fastify-adapter` se une al Quick Reference
 en lugar de borrarse. El «7 archivos» del título cuenta el `SKILL.md`, que es el séptimo archivo que
 lee un agente.
+
+L7. COU-336 entregado: 14 archivos de regla → 3 dominios (`commit`, `branch`, `pr`), 840 → 333 líneas
+markdown, `SKILL.md` 51 → 29. Baldes medidos: 3 keep, 7 absorbidas en `commit.md`, 4 drops. El
+changelog no pasó a herramienta: release-please no se adopta en este repo, así que la regla se quedó
+como prosa y el gate se reporta como no habilitado (D1 del documento de la feature). Tres referencias
+muertas corregidas en el mismo ticket: dos en `git-environment-flow/rules/release/p0-release-automation.md`
+y una en `linear-tickets/rules/integration/p1-github-integration.md`.
