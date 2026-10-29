@@ -145,15 +145,21 @@ spec:
 ## P1 — Scope RBAC to least privilege
 Create a dedicated `ServiceAccount` per workload. Never use the default one. Scope its `Role` to only the resources and verbs the application actually needs.
 ```yaml
-# ✅ A dedicated ServiceAccount and a Role scoped to what it needs
+# ✅ ServiceAccount, Role scoped to what it needs, and the RoleBinding that joins them
 apiVersion: v1
 kind: ServiceAccount
 metadata: { name: api }
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
-rules:
-  - { apiGroups: [""], resources: ["configmaps"], verbs: ["get", "list"] }
+metadata: { name: api }
+rules: [{ apiGroups: [""], resources: ["configmaps"], verbs: ["get", "list"] }]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: { name: api }
+roleRef: { apiGroup: rbac.authorization.k8s.io, kind: Role, name: api }
+subjects: [{ kind: ServiceAccount, name: api }]
 ```
 ```yaml
 # ❌ cluster-admin bound to an app workload
