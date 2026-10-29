@@ -32,7 +32,7 @@ the person saw the diff and said yes. See `AGENTS.md`.
 | `github-conventions` | Authoritative GitHub conventions — three domain files for commits, branches and pull requests, one decision per rule with one ✅/❌ pair, plus the commit and pull request templates. |
 | `code-comments` | Comment and JSDoc standard: self-sufficient code carries no comments; JSDoc fires only for nesting or hidden effects, types must match the signature, and no ticket or priority-tag references in code. |
 | `git-environment-flow` | Org-wide Git environment branch model, promotion flow, release lifecycle, and deployment tracking. |
-| `kubernetes-best-practices` | Kubernetes and CDK8s infrastructure best practices: Deployments, Services, Ingress, NetworkPolicies, secrets. |
+| `kubernetes-best-practices` | Kubernetes and cdk8s infrastructure standard — seven domain files for security, resources, reliability, observability, labels, MongoDB and anti-patterns, one decision per rule with one ✅/❌ pair, plus the manifest templates and the upstream references. |
 | `linear-tickets` | Org-standard Linear ticket authoring and integration: Spanish scannable titles, complete descriptions, testable AC, and `COU-###`/`fixes` GitHub linkage. |
 | `kickoff` | Session bootstrap with hard gates: Linear project, ticket readiness (project, estimate, assignee), ticket state per moment, branch created from Linear's `branchName`, ODD tracking. Nothing is implemented without a ticket, and no commit happens without explicit authorization. Delegates every rule to `git-environment-flow`, `github-conventions` and `linear-tickets`. |
 
