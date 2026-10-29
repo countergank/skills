@@ -25,3 +25,9 @@ Production Kubernetes standard. Seven domain files; each rule states one decisio
 | `references/` | Checking upstream standards | Pod Security Standards, recommended labels, Fairwinds Polaris default checks |
 
 MongoDB rules apply only to that workload; the other six domains apply to every manifest.
+
+## Choosing the authoring path
+
+This standard covers both ways of producing the same objects: plain YAML manifests, and cdk8s TypeScript constructs (`assets/cdk8s-construct.ts`).
+
+Read the repository before writing. A `cdk8s.yaml`, an `imports/` directory, or `cdk8s-plus` in `package.json` means cdk8s; YAML under `manifests/`, `deploy/`, or `helm/` means plain manifests. Follow the path the repository already uses, even when the task does not name it, and say which path you took. When the repository shows neither, state the assumption and continue; ask only when the choice changes what you can deliver.
