@@ -78,7 +78,7 @@ grep -rc "si .* y no .* salvo" skills/<name>     # condicionales anidados
 | `kubernetes-best-practices` | catálogo | 27 | ~320 | 67 | 47 | 0 | 15 | 5 | 7 archivos |
 | `github-conventions` | catálogo | 29 | ~290 | 14 | 3 | 0 | 7 | 4 | 3 archivos |
 | `linear-tickets` | catálogo | 33 | ~2.400 | 5 | 6 | 0 | 1 | 1 | 5 archivos |
-| `git-environment-flow` | catálogo | 49 | ~4.000 | 6 | 5 | 1 | 0 | 1 | 5 archivos |
+| `git-environment-flow` | catálogo | 27 | ~1.900 | 4 | 5 | 1 | 0 | 1 | 4 archivos |
 | `kickoff` | procedimental | 161 | ~1.195 | 0 | — | — | — | — | 1 archivo |
 
 Los baldes no suman la columna Reglas en tres filas, y se deja dicho en lugar de forzar el número:
