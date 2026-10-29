@@ -4,8 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+
+- **kubernetes-best-practices**: the RBAC example now shows the `RoleBinding` that joins the ServiceAccount and the Role, and the Role carries its `metadata.name`, so the trio can be pasted as written; the YAML eval holds at 12/12 runs on both sides
+
 ### Changed
 
+- **kubernetes-best-practices**: an eighth domain file, `rules/cdk8s.md`, states how each decision is written when the repository authors with cdk8s — build on `plus.Deployment` and `addContainer` instead of raw `Kube*` objects, and the construct's vocabulary for the security context, the resources, the probes and the labels; anything the construct does not model keeps the YAML rule of its own domain. The cdk8s eval moves the `uses-plus` signal from 2/5 to 5/5 runs with no other signal changing
 - **git-environment-flow**: reduce 6 rule files to 4 domain files (`rules/environment.md`, `promotion.md`, `hotfix.md`, `release.md`) — `p2-deployment-tracking` retires as generic, `p0-release-automation` collapses to a pointer at `assets/release.sh` with its real flags and its abort contract, and the exception "a hotfix skips the staging curation path but never the review" now has a single owner in `rules/hotfix.md`; the behavioral eval, five runs per condition and thirteen signals, shows no signal degrading and one improving — the staging-is-not-the-source-of-main rule, 3/5 to 4/5
 - **linear-tickets**: reduce 7 rule files to 5 domain files (`rules/title.md`, `description.md`, `labels.md`, `language.md`, `integration.md`) — the normative content is translated to English, `p1-per-type-templates` folds into the `SKILL.md` decision gates, and `p0-platform-structure` retires as a speculative extension contract for platforms that do not exist; the behavioral eval, five runs per condition and twelve signals, shows no signal degrading
 - **kubernetes-best-practices**: reduce 67 rule files to 7 domain files (`rules/<category>.md`) — 47 rules survive, 15 absorb a duplicate from another category, 5 retire, and the two contradicting limit-to-request ratios collapse into one rule (CPU 2-5x, memory 1.2-1.5x). The eleven rules a manifest linter could enforce stay as prose: the tool gate is reported, not enabled, because this repository ships no cluster and `references/polaris-default.yaml` documents checks rather than running them
