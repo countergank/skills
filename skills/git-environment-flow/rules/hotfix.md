@@ -8,7 +8,7 @@ A hotfix starts from `main`, never from `develop` or `staging`, because the fix 
 
 ```text
 main ──branch──▶ hotfix/description ──merge+tag──▶ main ──backmerge──▶ develop
-                                                        └─▶ staging recibe el fix en el próximo release
+                                                        └─▶ staging catches up in the next release/x.y.z cut from develop
 ```
 
 1. **Branch from `main`** — `hotfix/<description>` off the current production state.

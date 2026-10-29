@@ -36,7 +36,7 @@ All three require a pull request, one approving reviewer, passing CI, dismissed 
 
 The check names are repo-specific: this skill requires that checks exist, not which ones. Working solo, the admin needs a bypass on all three to merge their own pull requests; fill `users`, leave `teams` and `apps` empty, and remove the usernames when the team grows — which is also when `main` goes to two reviewers.
 
-```json
+```text
 // ✅ The allowance that makes solo work possible, mirrored on all three branches
 "bypass_pull_request_allowances": { "users": ["<github-username>"], "teams": [], "apps": [] }
 // ❌ Empty users: the solo admin cannot merge a single pull request
