@@ -189,3 +189,11 @@ lectura, y 170 de esas líneas eran este documento en español, que no se public
 reescribió el commit tip en C6a (`bbe1aa0`, SKILL.md + README + CHANGELOG + `linear-method.md` +
 auditoría, 154 líneas) y C6b (este documento, tracking sin recibo). C6a va a review; C6b no, por
 decisión del usuario: es tracking interno, no contenido normativo.
+
+L12. **C6a quedó sin recibo y se entrega como deuda.** Cuatro intentos del lane de legibilidad, cuatro
+modos de falla distintos y ningún veredicto: `stopReason: length` dos veces sobre el commit sin partir
+(606 s / 23.403 tokens y 570 s / 32.768 tokens, 0 texto), `content_filter` del proveedor a los 263 s, y
+un payload de 60 bytes sin JSON a los 227 ms. El slot nunca se consumió y la autoridad de C6a sigue
+abierta en `reviewing` (`review-04cd0a9a461ee224`), así que el recibo se puede cerrar cuando el lane
+vuelva: abandonar la lineage y re-revisar, como se hizo con C5 en L10. C1-C5 sí tienen recibo quemado,
+con 15 hallazgos informativos en total y ninguna corrección abierta.
