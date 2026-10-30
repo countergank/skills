@@ -1,6 +1,6 @@
 ---
 name: kubernetes-best-practices
-description: "Trigger: Kubernetes, k8s, cdk8s, Deployment, Service, Ingress, StatefulSet, NetworkPolicy, SealedSecret, ServiceMonitor, infrastructure/**, manifiestos, cluster, Helm. Production Kubernetes standard for agents and humans: seven domain files covering security hardening, resource sizing, reliability, observability, naming and labels, MongoDB on Kubernetes, and the anti-patterns that never ship. Úsala siempre que escribas, revises o modifiques manifiestos, Helm charts o constructs de cdk8s; léela antes de la primera línea de YAML y abre el archivo de dominio que corresponda a lo que estás creando."
+description: "Trigger: Kubernetes, k8s, cdk8s, Deployment, Service, Ingress, StatefulSet, NetworkPolicy, SealedSecret, ServiceMonitor, infrastructure/**, manifiestos, cluster, Helm. Production Kubernetes standard for agents and humans: eight domain files covering security hardening, resource sizing, reliability, observability, naming and labels, MongoDB on Kubernetes, the anti-patterns that never ship, and how each decision is expressed in cdk8s-plus constructs. Úsala siempre que escribas, revises o modifiques manifiestos, Helm charts o constructs de cdk8s; léela antes de la primera línea de YAML y abre el archivo de dominio que corresponda a lo que estás creando."
 license: MIT
 permissions:
   - read-files
@@ -10,7 +10,7 @@ metadata:
   version: "2.0.0"
 ---
 
-Production Kubernetes standard. Seven domain files; each rule states one decision with one ✅/❌ pair. Read the file that matches the resource you are about to write.
+Production Kubernetes standard. Eight domain files; each rule states one decision with one ✅/❌ pair. Read the file that matches the resource you are about to write.
 
 | File | Read it when | Why |
 |------|--------------|-----|
@@ -21,6 +21,7 @@ Production Kubernetes standard. Seven domain files; each rule states one decisio
 | `rules/naming-labels.md` | Naming or labelling any object | The `app.kubernetes.io/*` set, namespace naming, selector consistency |
 | `rules/mongodb.md` | Deploying MongoDB | Auth, persistent storage, StatefulSet, backups, TLS, cache sizing, replica set shape |
 | `rules/anti-patterns.md` | Before shipping a manifest | `emptyDir` for state, `hostPath`, `NodePort` |
+| `rules/cdk8s.md` | The repository authors with cdk8s | Build on cdk8s-plus constructs instead of raw Kube objects, and how each domain decision maps to the construct's vocabulary |
 | `assets/` | Scaffolding a resource | cdk8s construct, NetworkPolicy, ServiceMonitor, SealedSecret and MongoDB StatefulSet templates |
 | `references/` | Checking upstream standards | Pod Security Standards, recommended labels, Fairwinds Polaris default checks |
 
