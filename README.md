@@ -27,12 +27,13 @@ the person saw the diff and said yes. See `AGENTS.md`.
 
 | Skill | Description |
 |-------|-------------|
-| `nestjs-backend` | Production-ready NestJS backend development. Modules, controllers, DI, guards, pipes, TypeORM, Prisma, JWT auth, Swagger, testing, Docker. |
-| `react-frontend` | Modern React 19 frontend development with TypeScript 5, Vite, and Vitest — 87 WCAG 2.2-compliant rules across 10 categories. |
-| `github-conventions` | Authoritative GitHub conventions: conventional commits, branch naming, PR templates, issue linking, changelog. |
-| `git-environment-flow` | Org-wide Git environment branch model, promotion flow, release lifecycle, and deployment tracking. |
-| `kubernetes-best-practices` | Kubernetes and CDK8s infrastructure best practices: Deployments, Services, Ingress, NetworkPolicies, secrets. |
-| `linear-tickets` | Org-standard Linear ticket authoring and integration: Spanish scannable titles, complete descriptions, testable AC, and `COU-###`/`fixes` GitHub linkage. |
+| `nestjs-backend` | Production-ready NestJS backend development — six domain files for controllers, security, data, auth, API contract and operations, one decision per rule with one ✅/❌ pair. |
+| `react-frontend` | Modern React 19 SPA development with TypeScript 5, Vite, and Vitest — ten WCAG 2.2-compliant domain files with one decision per rule. |
+| `github-conventions` | Authoritative GitHub conventions — three domain files for commits, branches and pull requests, one decision per rule with one ✅/❌ pair, plus the commit and pull request templates. |
+| `code-comments` | Comment and JSDoc standard: self-sufficient code carries no comments; JSDoc fires only for nesting or hidden effects, types must match the signature, and no ticket or priority-tag references in code. |
+| `git-environment-flow` | Org-wide Git environment model — four domain files for the three permanent branches and their protection, the promotion chain, the hotfix path and the release lifecycle, one decision per rule with one ✅/❌ pair, plus `assets/release.sh` as the release procedure itself. |
+| `kubernetes-best-practices` | Kubernetes and cdk8s infrastructure standard — eight domain files for security, resources, reliability, observability, labels, MongoDB, anti-patterns and the cdk8s-plus constructs, one decision per rule with one ✅/❌ pair, plus the manifest templates and the upstream references. |
+| `linear-tickets` | Linear ticket standard — five domain files for title, description, labels, language and integration, one decision per rule with one ✅/❌ pair, plus the per-type templates and the Linear method references. |
 | `kickoff` | Session bootstrap with hard gates: Linear project, ticket readiness (project, estimate, assignee), ticket state per moment, branch created from Linear's `branchName`, ODD tracking. Nothing is implemented without a ticket, and no commit happens without explicit authorization. Delegates every rule to `git-environment-flow`, `github-conventions` and `linear-tickets`. |
 
 ## Developer Tools
@@ -55,17 +56,18 @@ Scripts in `scripts/` are for local development and security scanning, not user-
 
 ## Skill Structure
 
-Each skill follows the Vercel `react-best-practices` pattern:
+Two shapes, chosen by the kind of skill rather than by symmetry:
 
-- `SKILL.md` — Compact trigger-first entry point (~300-450 tokens)
-- `rules/` — One rule per file, prioritized P0-P3 across categories
-- `assets/` — Code templates and boilerplate
+- **Catalogue** (`react-frontend`, `nestjs-backend`, `kubernetes-best-practices`, `github-conventions`, `linear-tickets`, `git-environment-flow`) — `SKILL.md` is a compact trigger-first index with a table of domains, and `rules/<domain>.md` carries one concern per file, with the priority as a heading inside the file and one ✅/❌ pair per rule.
+- **Procedural** (`kickoff`) — a single `SKILL.md` with the ordered steps, because each step depends on the previous one and splitting it would create blind references between fragments of the same procedure.
+
+`assets/` carries the templates and scripts a skill ships, and `references/` the upstream material it points at. `rules/` stays flat: one level, never `rules/<category>/`.
 
 ## Contributing
 
 1. Create a skill directory under `skills/<name>/`
-2. Write `SKILL.md` with trigger-first frontmatter and priority table
-3. Add rule files under `rules/<category>/`
+2. Decide the shape: a catalogue skill gets a `SKILL.md` index plus `rules/<domain>.md` files; a procedural skill gets the ordered steps in `SKILL.md` alone
+3. Write `SKILL.md` with trigger-first frontmatter and a table of domains (or the steps, for a procedural skill)
 4. Run `./scripts/scan.sh skills/<name> --format json` — must exit 0
 5. Submit a pull request
 
