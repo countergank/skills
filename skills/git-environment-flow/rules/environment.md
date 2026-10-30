@@ -12,7 +12,7 @@ Every repository keeps `develop`, `staging` and `main` from initialization, with
 | `staging` | Pre-production mirror — curation testing | No | 1 |
 | `main` | Production source — always deployable | No | 1 |
 
-`staging` receives code only through the promotion flow of `rules/promotion.md`, never from a feature branch, and nothing is pushed to `main` directly.
+`staging` receives code only through the promotion flow of `rules/promotion.md`, never from a feature branch, and nothing is pushed to `main` directly. The reviewer count is one per branch when someone else can review, and zero when the maintainer works alone; the protection rule below says how each case is expressed.
 
 ```text
 // ✅ All three exist, develop is the default, features land on develop
@@ -23,18 +23,19 @@ main                            default: main
 
 ## P0 — Protect all three branches with the same shape
 
-All three require a pull request, one approving reviewer, passing CI, dismissed stale reviews and last-push approval. Force pushes and deletions are blocked, and administrators are included. What differs is strictness and allowed source: `develop` tolerates out-of-date branches, `staging` and `main` require up to date; `staging` accepts only `release/*`, and `main` only `release/*` and `hotfix/*`.
+All three require a pull request and passing CI. Dismissed stale reviews and last-push approval apply as soon as there is an approving reviewer, because there has to be an approval to dismiss or to renew. Force pushes and deletions are blocked, and administrators are included. What differs is strictness and allowed source: `develop` tolerates out-of-date branches, `staging` and `main` require up to date; `staging` accepts only `release/*`, and `main` only `release/*` and `hotfix/*`.
 
 | Setting | `develop` | `staging` | `main` |
 |---|---|---|---|
-| PR, 1 reviewer, CI | required | required | required |
+| PR and passing CI | required | required | required |
+| Approving reviewers | 1 (0 if alone) | 1 (0 if alone) | 1 (0 if alone) |
 | Dismiss stale, last push approval | yes | yes | yes |
 | Branches up to date (strict) | no | yes | yes |
 | Allowed source | any | `release/*` | `release/*`, `hotfix/*` |
 | Force push, deletion | blocked | blocked | blocked |
 | Include administrators | yes | yes | yes |
 
-The check names are repo-specific: this skill requires that checks exist, not which ones. Working solo, the admin needs a bypass on all three to merge their own pull requests; fill `users`, leave `teams` and `apps` empty, and remove the usernames when the team grows — which is also when `main` goes to two reviewers.
+The check names are repo-specific: this skill requires that checks exist, not which ones. In a repository with a single maintainer, set `required_approving_review_count` to 0 and give that user a bypass with `users` filled and `teams` and `apps` empty: nobody else can approve, and a rule whose only satisfaction is being bypassed teaches everyone to bypass it. That is the normal shape for a solo repository, not a temporary exception — it changes the day a second person joins, which is also when `main` goes to two reviewers.
 
 ```text
 // ✅ The allowance that makes solo work possible, mirrored on all three branches

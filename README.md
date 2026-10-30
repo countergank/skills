@@ -56,17 +56,18 @@ Scripts in `scripts/` are for local development and security scanning, not user-
 
 ## Skill Structure
 
-Each skill follows the Vercel `react-best-practices` pattern:
+Two shapes, chosen by the kind of skill rather than by symmetry:
 
-- `SKILL.md` — Compact trigger-first entry point (~300-450 tokens)
-- `rules/` — One rule per file, prioritized P0-P3 across categories
-- `assets/` — Code templates and boilerplate
+- **Catalogue** (`react-frontend`, `nestjs-backend`, `kubernetes-best-practices`, `github-conventions`, `linear-tickets`, `git-environment-flow`) — `SKILL.md` is a compact trigger-first index with a table of domains, and `rules/<domain>.md` carries one concern per file, with the priority as a heading inside the file and one ✅/❌ pair per rule.
+- **Procedural** (`kickoff`) — a single `SKILL.md` with the ordered steps, because each step depends on the previous one and splitting it would create blind references between fragments of the same procedure.
+
+`assets/` carries the templates and scripts a skill ships, and `references/` the upstream material it points at. `rules/` stays flat: one level, never `rules/<category>/`.
 
 ## Contributing
 
 1. Create a skill directory under `skills/<name>/`
-2. Write `SKILL.md` with trigger-first frontmatter and priority table
-3. Add rule files under `rules/<category>/`
+2. Decide the shape: a catalogue skill gets a `SKILL.md` index plus `rules/<domain>.md` files; a procedural skill gets the ordered steps in `SKILL.md` alone
+3. Write `SKILL.md` with trigger-first frontmatter and a table of domains (or the steps, for a procedural skill)
 4. Run `./scripts/scan.sh skills/<name> --format json` — must exit 0
 5. Submit a pull request
 
