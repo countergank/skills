@@ -36,6 +36,7 @@ authorization step has not happened.
 - `description` is the discovery contract: list the trigger phrases (English and Spanish,
   as the installed skills do) and what the skill does.
 - Step-based skills (like `kickoff`) carry ordered steps with the commands and queries to run.
-  Rule-based skills carry `rules/<category>/pX-*.md` and a priority table.
+  Catalogue skills carry one file per domain, `rules/<domain>.md`, with the priority as a heading
+  inside the file and one ✅/❌ pair per rule; `rules/` stays flat, never `rules/<category>/`.
 - Every behavior change updates the `README.md` row of the skill and the installed copies.
 - Run `./scripts/scan.sh skills/<name> --format json` before claiming a skill is ready.
