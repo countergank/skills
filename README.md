@@ -33,8 +33,8 @@ the person saw the diff and said yes. See `AGENTS.md`.
 | `code-comments` | Comment and JSDoc standard: self-sufficient code carries no comments; JSDoc fires only for nesting or hidden effects, types must match the signature, and no ticket or priority-tag references in code. |
 | `git-environment-flow` | Org-wide Git environment model — four domain files for the three permanent branches and their protection, the promotion chain, the hotfix path and the release lifecycle, one decision per rule with one ✅/❌ pair, plus `assets/release.sh` as the release procedure itself. |
 | `kubernetes-best-practices` | Kubernetes and cdk8s infrastructure standard — eight domain files for security, resources, reliability, observability, labels, MongoDB, anti-patterns and the cdk8s-plus constructs, one decision per rule with one ✅/❌ pair, plus the manifest templates and the upstream references. |
-| `linear-tickets` | Linear ticket standard — five domain files for title, description, labels, language and integration, one decision per rule with one ✅/❌ pair, plus the per-type templates and the Linear method references. |
-| `kickoff` | Session bootstrap with hard gates: Linear project, ticket readiness (project, estimate, assignee), ticket state per moment, branch created from Linear's `branchName`, ODD tracking. Nothing is implemented without a ticket, and no commit happens without explicit authorization. Delegates every rule to `git-environment-flow`, `github-conventions` and `linear-tickets`. |
+| `github-tickets` | GitHub issue standard — five domain files for title, description, labels, language and integration, one decision per rule with one ✅/❌ pair, plus the per-type templates, the native GitHub issue templates and the GitHub method references. |
+| `kickoff` | Session bootstrap with hard gates: GitHub Project board, issue readiness (board membership, Estimate, assignee), board status per moment, branch created from the `feature/<number>-<slug>` convention, ODD tracking. Nothing is implemented without an issue, and no commit happens without explicit authorization. Delegates every rule to `git-environment-flow`, `github-conventions` and `github-tickets`. |
 
 ## Developer Tools
 
@@ -58,7 +58,7 @@ Scripts in `scripts/` are for local development and security scanning, not user-
 
 Two shapes, chosen by the kind of skill rather than by symmetry:
 
-- **Catalogue** (`react-frontend`, `nestjs-backend`, `kubernetes-best-practices`, `github-conventions`, `linear-tickets`, `git-environment-flow`) — `SKILL.md` is a compact trigger-first index with a table of domains, and `rules/<domain>.md` carries one concern per file, with the priority as a heading inside the file and one ✅/❌ pair per rule.
+- **Catalogue** (`react-frontend`, `nestjs-backend`, `kubernetes-best-practices`, `github-conventions`, `github-tickets`, `git-environment-flow`) — `SKILL.md` is a compact trigger-first index with a table of domains, and `rules/<domain>.md` carries one concern per file, with the priority as a heading inside the file and one ✅/❌ pair per rule.
 - **Procedural** (`kickoff`) — a single `SKILL.md` with the ordered steps, because each step depends on the previous one and splitting it would create blind references between fragments of the same procedure.
 
 `assets/` carries the templates and scripts a skill ships, and `references/` the upstream material it points at. `rules/` stays flat: one level, never `rules/<category>/`.
