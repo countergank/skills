@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0] - 2026-11-01
+
+### Breaking Changes
+- **github-tickets**: rename linear-tickets and ship native issue templates (v3.0.0)
+- **kickoff**: rewrite bootstrap for GitHub Issues + Projects (v3.0.0)
+
+### Fixed
+- **release**: detect scoped breaking changes feat(scope)!: (#82)
 ## [1.5.0] - 2026-10-30
 
 ### Fixed
