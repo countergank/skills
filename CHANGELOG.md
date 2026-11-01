@@ -2,15 +2,6 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
-
-### Changed
-
-- **linear-tickets → github-tickets**: the ticketing platform migrates from Linear to GitHub Issues + Projects (the Linear free plan caps the workspace at 250 issues, counting completed ones until deleted). The skill renames to `github-tickets`, moves to `references/github-method.md`, and owns the new integration contract: branch `feature/<issue-number>-<slug>` (number first, kebab-case slug from the title) and the PR keyword `fixes #<number>`; the board `Status` is set by `kickoff` because `fixes` auto-close only fires on a default-branch merge and these repos merge into `develop`. Templates are unchanged
-- **kickoff (3.0.0)**: rewritten for GitHub Issues + Projects — the board is the homonymous organization Project (`gh project list`), readiness checks read board membership, `Estimate` and assignee via `gh`/GraphQL, the branch comes from the naming convention instead of Linear's `branchName`, and step 7 states the develop-merge close caveat explicitly
-- **github-conventions (2.1.0)**: `rules/branch.md` P0 takes the ticket branch from the convention instead of Linear's `branchName`, `rules/pr.md` P1 drops the `fixes COU-###` magic word and documents the default-branch auto-close caveat, and the PR template replaces the Linear ticket section with the caveat comment; `git-environment-flow` boundary updated to the same contract
-- **repo docs**: `README.md` rows and the catalogue list reflect the rename
-
 ## [1.5.0] - 2026-10-30
 
 ### Fixed
